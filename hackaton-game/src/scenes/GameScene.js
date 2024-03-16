@@ -2,8 +2,6 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super("GameScene");
     }
-
-
     
     preload() {
         this.load.image("bg", "assets/bg.png");
@@ -22,13 +20,10 @@ class GameScene extends Phaser.Scene {
         
         this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
-
         this.bg.setScrollFactor(0);
-        this.bg.setOrigin(0, 0);
-
 
         this.floor = this.physics.add.staticSprite(500, 770, 'floor');
-        this.floor.displayWidth = this.sys.game.config.width;
+        this.floor.setScale(1000, 1);
         this.floor.setDepth(-1000);
         this.floor.refreshBody(); 
 
@@ -67,13 +62,13 @@ class GameScene extends Phaser.Scene {
     }
 
     createDrawers() {
-        this.drawers = this.physics.add.staticSprite(1000, 550, 'drawers');
+        this.drawers = this.physics.add.staticSprite(1230, 550, 'drawers');
         this.drawers.setDepth(-1);
         this.drawers.setScale(3.5);
 
-        this.drawersBody = this.physics.add.staticSprite(700, 620);
+        this.drawersBody = this.physics.add.staticSprite(1220, 500);
         this.drawersBody.setDepth(-1000);
-        this.drawersBody.setScale(12, 3);
+        this.drawersBody.setScale(18.6, 11);
         this.drawersBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.drawersBody);
@@ -97,10 +92,18 @@ class GameScene extends Phaser.Scene {
     createBattery() {
 
         this.battery = this.physics.add.sprite(100, 200, 'battery');
+        this.physics.world.setBounds(0, 0, 3000, 900);
 
         this.anims.create({
             key: 'batteryWalk',
-            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 6 }),
+            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 5 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'batteryJump',
+            frames: this.anims.generateFrameNumbers('battery', { start: 6, end: 6 }),
             frameRate: 10,
             repeat: -1
         });
@@ -116,8 +119,8 @@ class GameScene extends Phaser.Scene {
         let midpointX = (this.bulb.x + this.battery.x) / 2;
         this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
         
-        // let worldBounds = this.physics.world.bounds;
-        // this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
+        let worldBounds = this.physics.world.bounds;
+        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
     }
 
     updateBulb() {
@@ -164,7 +167,7 @@ class GameScene extends Phaser.Scene {
         if (this.keys.p2left.isDown) {
             this.battery.setVelocityX(-speed);
             if (!this.battery.body.touching.down){
-                this.battery.anims.stop();
+                this.battery.play('batteryJump', true);
             }  else {
                 this.battery.play('batteryWalk', true);
             }
@@ -172,13 +175,17 @@ class GameScene extends Phaser.Scene {
         } else if (this.keys.p2right.isDown) {
             this.battery.setVelocityX(speed);
             if (!this.battery.body.touching.down){
-                this.battery.anims.stop();
+                this.battery.play('batteryJump', true);
             }  else {
                 this.battery.play('batteryWalk', true);
             }
         } else {
             this.battery.setVelocityX(0);
-            this.battery.anims.stop();
+            if (!this.battery.body.touching.down){
+                this.battery.play('batteryJump', true);
+            }  else {
+                this.battery.play('batteryWalk', true);
+            }
         }
         
         if (this.keys.p2up.isDown && this.battery.body.touching.down) {
