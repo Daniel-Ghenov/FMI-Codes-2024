@@ -17,7 +17,7 @@ class GameScene extends Phaser.Scene {
             frameHeight: 100,
         });
         this.load.spritesheet('fan', 'assets/fan.png', {
-            frameWidth: 50,
+            frameWidth: 46,
             frameHeight: 50,
         });
         this.load.image('table', 'assets/table.png');
@@ -27,6 +27,8 @@ class GameScene extends Phaser.Scene {
         this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
+        
+        this.physics.world.setBounds(0, 0, 3000, 900);
 
         this.createFloor();
 
@@ -117,6 +119,13 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'fanOff',
+            frames: this.anims.generateFrameNumbers('fan', { start: 4, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
 
@@ -153,11 +162,6 @@ class GameScene extends Phaser.Scene {
     createBattery() {
 
         this.battery = this.physics.add.sprite(100, 200, 'battery');
-        this.physics.world.setBounds(0, 0, 3000, 900);
-
-        this.physics.world.setBounds(0, 0, 2000, 800);
-
-        this.physics.world.setBounds(0, 0, 2000, 800);
 
         this.anims.create({
             key: 'batteryWalk',
@@ -265,8 +269,8 @@ class GameScene extends Phaser.Scene {
 
     updateFanBulbCollision() {
         if (!this.fan.isOn) {
-            this.fan.anims.stop();
-            return;
+            this.fan.play('fanOff', true);
+        return;
         }
 
         this.fan.play('fanOn', true);
