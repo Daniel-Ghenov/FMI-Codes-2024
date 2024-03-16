@@ -5,6 +5,7 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg", "assets/bg.png");
+        this.load.image("chair", "assets/chair.png")
         this.load.spritesheet('bulb', 'assets/bulb.png', {
             frameWidth: 45,
             frameHeight: 48,
@@ -17,7 +18,7 @@ class GameScene extends Phaser.Scene {
 
     create() {
         let bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
-        bg.setDepth(-2);
+        bg.setDepth(-100);
 
         this.floor = this.physics.add.staticSprite(300, 750, 'floor');
 
@@ -26,6 +27,8 @@ class GameScene extends Phaser.Scene {
 
         this.createBulb();
         this.createBattery();
+
+        this.createChair();
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -40,6 +43,19 @@ class GameScene extends Phaser.Scene {
         });
 
     }   
+
+    createChair() {
+        this.chair = this.physics.add.staticSprite(700, 630, 'chair');
+        this.chair.setDepth(-1);
+        this.chair.setScale(3.3);
+
+        this.chairCussion = this.physics.add.staticSprite(700, 650);
+        this.chairCussion.setDepth(-1000);
+
+        this.physics.add.collider(this.bulb, this.chairCussion);
+        this.physics.add.collider(this.battery, this.chairCussion)
+
+    }
 
     createBulb() {
         this.bulb = this.physics.add.sprite(100, 200, 'bulb');
@@ -68,7 +84,7 @@ class GameScene extends Phaser.Scene {
             repeat: -1
         });
 
-        this.physics.add.collider(this.battery, this.floor)
+        this.physics.add.collider(this.battery, this.floor);
         this.battery.setCollideWorldBounds(true);
     }
 
