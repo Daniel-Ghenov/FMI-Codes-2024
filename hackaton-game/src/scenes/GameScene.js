@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene {
         this.load.image("bg", "assets/bg.png");
         this.load.image("chair", "assets/chair.png")
         this.load.image('drawers', 'assets/drawers.png')
+        this.load.image('remote', 'assets/remote.png')
         this.load.spritesheet('bulb', 'assets/bulb.png', {
             frameWidth: 53.6,
             frameHeight: 100,
@@ -32,6 +33,7 @@ class GameScene extends Phaser.Scene {
 
         this.createChair();
         this.createDrawers();
+        this.createRemote();
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -75,6 +77,12 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.drawersBody)
     }
 
+    createRemote() {
+        this.remote = this.physics.add.staticSprite(1000, 210, 'remote');
+        this.remote.setDepth(10);
+        this.remote.setScale(2);
+    }
+
     createBulb() {
         this.bulb = this.physics.add.sprite(100, 200, 'bulb');
 
@@ -115,12 +123,9 @@ class GameScene extends Phaser.Scene {
     update() {
         this.updateBulb();
         this.updateBattery();
-
-        let midpointX = (this.bulb.x + this.battery.x) / 2;
-        this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
+        this.updateCamera();
         
-        let worldBounds = this.physics.world.bounds;
-        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
+        var isRemoteOn = this.physics.overlap(this.battery, this.remote);
     }
 
     updateBulb() {
@@ -186,6 +191,14 @@ class GameScene extends Phaser.Scene {
             this.battery.setVelocityY(-450);
         }    
 
+    }
+
+    updateCamera() {
+        let midpointX = (this.bulb.x + this.battery.x) / 2;
+        this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
+        
+        let worldBounds = this.physics.world.bounds;
+        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
     }
 
 
