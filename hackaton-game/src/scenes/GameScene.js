@@ -26,6 +26,10 @@ class GameScene extends Phaser.Scene {
     this.load.image("clock", "assets/clock.png");
     this.load.image("chandelier", "assets/chandelier.png");
     this.load.image("wardrobe", "assets/wardrobe.png");
+    this.load.spritesheet("prism", "assets/prism-sprite.png", {
+        frameWidth: 800,
+        frameHeight: 700,
+        });
   }
   create() {
     this.bg = this.add
@@ -60,6 +64,7 @@ class GameScene extends Phaser.Scene {
     this.createClock();
     this.createChandelier();
     this.createWardrobe();
+    this.createPrism();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -219,107 +224,49 @@ class GameScene extends Phaser.Scene {
     
     }
 
+    createPrism() {
+        this.prism = this.physics.add.staticSprite(3706, 466, "prism");
+        this.prism.setDepth(-1);
+        this.prism.setScale(1);
 
-  update() {
-    this.updateBulb();
-    this.updateBattery();
+        this.prismBody = this.physics.add.staticSprite(3360, 300);
+        this.prismBody.setDepth(-1000);
+        this.prismBody.setScale(1, 1);
+        this.prismBody.refreshBody();
 
-    var isRemoteOn = this.physics.overlap(this.battery, this.remote);
-    this.fan.isOn = isRemoteOn;
+        this.prismTrigger = this.physics.add.staticSprite(3340, 150);
+        this.prismTrigger.setDepth(-1000);
+        this.prismTrigger.setScale(5, 5);
+        this.prismTrigger.refreshBody();
 
-    this.updateFanBulbCollision();
-    this.updateCamera();
+        this.anims.create({
+            key: "prismOff",
+            frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: -1,
+        });
 
-    //TODO add dying logic from the water bowl
-  }
+        this.anims.create({
+            key: "prismTransition",
+            frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 15 }),
+            frameRate: 10,
+            repeat: 0,
+        });
 
-  updateBulb() {
-    const speed = 160;
-    this.bulb.play("bulbWalk", true);
 
-    if (this.keys.left.isDown) {
-      this.bulb.setVelocityX(-speed);
-      if (!this.bulb.body.touching.down) {
-        this.bulb.anims.stop();
-      } else {
-        this.bulb.play("bulbWalk", true);
-      }
-    } else if (this.keys.right.isDown) {
-      this.bulb.setVelocityX(speed);
-      if (!this.bulb.body.touching.down) {
-        this.bulb.anims.stop();
-      } else {
-        this.bulb.play("bulbWalk", true);
-      }
-    } else {
-      this.bulb.setVelocityX(0);
-      if (!this.bulb.body.touching.down) {
-        this.bulb.anims.stop();
-      } else {
-        this.bulb.play("bulbWalk", true);
-      }
+        this.anims.create({
+            key: "prismTransitionBack",
+            frames: this.anims.generateFrameNumbers("prism", { start: 15, end: 0 }),
+            frameRate: 10,
+            repeat: 0,
+        });
+
+        this.prism.on = false;
+        this.prism.play("prismOff", true);
+
+        this.physics.add.collider(this.bulb, this.prismBody);
+        this.physics.add.collider(this.battery, this.prismBody);
     }
-
-    if (this.keys.up.isDown && this.bulb.body.touching.down) {
-      this.bulb.setVelocityY(-200);
-    }
-  }
-
-  updateBattery() {
-    const speed = 160;
-
-    if (this.keys.p2left.isDown) {
-      this.battery.setVelocityX(-speed);
-      if (!this.battery.body.touching.down) {
-        this.battery.play("batteryJump", true);
-      } else {
-        this.battery.play("batteryWalk", true);
-      }
-    } else if (this.keys.p2right.isDown) {
-      this.battery.setVelocityX(speed);
-      if (!this.battery.body.touching.down) {
-        this.battery.play("batteryJump", true);
-      } else {
-        this.battery.play("batteryWalk", true);
-      }
-    } else {
-      this.battery.setVelocityX(0);
-      if (!this.battery.body.touching.down) {
-        this.battery.play("batteryJump", true);
-      } else {
-        this.battery.play("batteryWalk", true);
-      }
-    }
-
-    if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-      this.battery.setVelocityY(-450);
-    }
-  }
-
-  updateCamera() {
-    let midpointX = (this.bulb.x + this.battery.x) / 2;
-    this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
-
-    let worldBounds = this.physics.world.bounds;
-    this.cameras.main.scrollX = Phaser.Math.Clamp(
-      this.cameras.main.scrollX,
-      0,
-      worldBounds.width - this.cameras.main.width
-    );
-  }
-
-  updateFanBulbCollision() {
-    if (!this.fan.isOn) {
-      this.fan.play("fanOff", true);
-      return;
-    }
-
-    this.fan.play("fanOn", true);
-
-    if (this.physics.overlap(this.bulb, this.fanStream)) {
-      this.bulb.setVelocityY(-300);
-    }
-  }
 
   createTable() {
     this.table = this.physics.add.staticSprite(2200, 700, "table");
@@ -376,7 +323,7 @@ class GameScene extends Phaser.Scene {
 }
 
   createBulb() {
-    this.bulb = this.physics.add.sprite(2850, 100, "bulb");
+    this.bulb = this.physics.add.sprite(3200, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -390,7 +337,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(2850, 100, "battery");
+    this.battery = this.physics.add.sprite(3200, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -420,6 +367,7 @@ class GameScene extends Phaser.Scene {
     this.updateFanBulbCollision();
     this.updateCamera();
     this.checkWaterBowlDeath();
+    this.updatePrism();
   }
 
   updateBulb() {
@@ -516,6 +464,20 @@ class GameScene extends Phaser.Scene {
             this.physics.overlap(this.battery, this.waterbowDeathZone)
         )
       this.scene.restart();
+    }
+
+    updatePrism() {
+        if (this.physics.overlap(this.bulb, this.prismTrigger)) {
+            if (!this.prism.on) {
+                this.prism.play("prismTransition", true);
+            }
+            this.prism.on = true;
+        } else {
+            if (this.prism.on) {
+                this.prism.play("prismTransitionBack", true);
+                this.prism.on = false;
+            }
+        }
     }
 
 }
