@@ -36,7 +36,7 @@ class GameScene extends Phaser.Scene {
             p2up: Phaser.Input.Keyboard.KeyCodes.UP,
             p2left: Phaser.Input.Keyboard.KeyCodes.LEFT,
             p2down: Phaser.Input.Keyboard.KeyCodes.DOWN,
-            p2right: Phaser.Input.Keyboard.KeyCodes.RIGHT,F
+            p2right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
         });
 
     }   
@@ -67,8 +67,6 @@ class GameScene extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
-        
-
 
         this.physics.add.collider(this.battery, this.floor)
         this.battery.setCollideWorldBounds(true);
@@ -83,18 +81,18 @@ class GameScene extends Phaser.Scene {
         const speed = 160;
   
         if (this.keys.left.isDown) {
-          this.bulb.setVelocityX(-speed);
-          this.bulb.play('bulbWalk', true);
+            this.bulb.setVelocityX(-speed);
+            this.bulb.play('bulbWalk', true);
         } else if (this.keys.right.isDown) {
-          this.bulb.setVelocityX(speed);
-          this.bulb.play('bulbWalk', true);
+            this.bulb.setVelocityX(speed);
+            this.bulb.play('bulbWalk', true);
         } else {
-          this.bulb.setVelocityX(0);
-          this.bulb.play('idle', true);
+            this.bulb.setVelocityX(0);
+            this.bulb.anims.stop();
         }
         
         if (this.keys.up.isDown && this.bulb.body.touching.down) {
-          this.bulb.setVelocityY(-330);
+            this.bulb.setVelocityY(-330);
         }
     }
 
@@ -106,16 +104,15 @@ class GameScene extends Phaser.Scene {
             this.battery.play('batteryWalk', true);
 
         } else if (this.keys.p2right.isDown) {
-        this.battery.setVelocityX(speed);
-        this.battery.play('batteryWalk', true);
-
+            this.battery.setVelocityX(speed);
+            this.battery.play('batteryWalk', true);
         } else {
-        this.battery.setVelocityX(0);
-        this.battery.play('idle', true);
+            this.battery.setVelocityX(0);
+            this.battery.anims.stop();
         }
         
         if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-        this.battery.setVelocityY(-330);
+            this.battery.setVelocityY(-330);
         }    
 
     }
