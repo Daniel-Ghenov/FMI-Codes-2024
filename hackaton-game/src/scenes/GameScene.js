@@ -28,7 +28,7 @@ class GameScene extends Phaser.Scene {
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
         
-        this.physics.world.setBounds(0, 0, 3000, 900);
+        this.physics.world.setBounds(0, -100, 3000, 1000);
 
         this.createFloor();
 
@@ -132,13 +132,13 @@ class GameScene extends Phaser.Scene {
     }
 
     createTable() {
-        this.table = this.physics.add.staticSprite(2000, 700, 'table');
+        this.table = this.physics.add.staticSprite(2050, 520, 'table');
         this.table.setDepth(-1);
         this.table.setScale(3.5);
 
-        this.tableBody = this.physics.add.staticSprite(2000, 700);
+        this.tableBody = this.physics.add.staticSprite(2050, 520);
         this.tableBody.setDepth(-1000);
-        this.tableBody.setScale(10.5, 10.5);
+        this.tableBody.setScale(17.5, 15);
         this.tableBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.tableBody);
