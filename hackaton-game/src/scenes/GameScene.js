@@ -2,6 +2,8 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super("GameScene");
     }
+
+
     
     preload() {
         this.load.image("bg", "assets/bg.png");
@@ -21,13 +23,8 @@ class GameScene extends Phaser.Scene {
         this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
 
-        let viewportWidth = this.sys.game.config.width;
-        let viewportHeight = this.sys.game.config.height;
-
-        let scaleX = viewportWidth / this.bg.width;
-        let scaleY = viewportHeight / this.bg.height;
-
-        this.bg.setScale(scaleX, scaleY);
+        this.bg.setScrollFactor(0);
+        this.bg.setOrigin(0, 0);
 
 
         this.floor = this.physics.add.staticSprite(500, 770, 'floor');
@@ -119,8 +116,8 @@ class GameScene extends Phaser.Scene {
         let midpointX = (this.bulb.x + this.battery.x) / 2;
         this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
         
-        let worldBounds = this.physics.world.bounds;
-        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
+        // let worldBounds = this.physics.world.bounds;
+        // this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
     }
 
     updateBulb() {
