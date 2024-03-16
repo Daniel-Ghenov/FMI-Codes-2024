@@ -172,20 +172,6 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.waterbowlBody);
   }
 
-  createBookshelf() {
-    this.bookshelf = this.physics.add.staticSprite(2015, 260, "bookshelf");
-    this.bookshelf.setDepth(-1);
-    this.bookshelf.setScale(3);
-
-    this.bookshelfBody = this.physics.add.staticSprite(2015, 230);
-    this.bookshelfBody.setDepth(-1000);
-    this.bookshelfBody.setScale(6, 2);
-    this.bookshelfBody.refreshBody();
-
-    this.physics.add.collider(this.bulb, this.bookshelfBody);
-    this.physics.add.collider(this.battery, this.bookshelfBody);
-  }
-
   createClock() {
     this.clock = this.physics.add.staticSprite(2350, 125, "clock");
     this.clock.setDepth(-1);
@@ -368,20 +354,26 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.waterbowlBody);
     this.physics.add.collider(this.battery, this.waterbowlBody);
   }
-
+  
   createBookshelf() {
-    this.bookshelf = this.physics.add.staticSprite(2015, 260, "bookshelf");
+    this.bookshelf = this.physics.add.staticSprite(2015, 260, 'bookshelf');
     this.bookshelf.setDepth(-1);
     this.bookshelf.setScale(3);
 
-    this.bookshelfBody = this.physics.add.staticSprite(2015, 230);
+    this.bookshelfBody = this.physics.add.staticSprite(2015, 240);
     this.bookshelfBody.setDepth(-1000);
-    this.bookshelfBody.setScale(6, 2);
+    this.bookshelfBody.setScale(8, 0.5);
     this.bookshelfBody.refreshBody();
 
+    this.books = this.physics.add.staticSprite(1945, 185);
+    this.books.setDepth(-1000);
+    this.books.setScale(3, 2.5);
+    this.books.refreshBody();
+
+
     this.physics.add.collider(this.bulb, this.bookshelfBody);
-    this.physics.add.collider(this.battery, this.bookshelfBody);
-  }
+    this.physics.add.collider(this.battery, this.bookshelfBody)
+}
 
   createBulb() {
     this.bulb = this.physics.add.sprite(1400, 100, "bulb");
@@ -518,35 +510,14 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-<<<<<<< HEAD
-  checkWaterBowlDeath() {
-    if (
-      this.physics.overlap(this.bulb, this.waterbowDeathZone) ||
-      this.physics.overlap(this.battery, this.waterbowDeathZone)
-    ) {
+    checkWaterBowlDeath() {
+        if (
+            this.physics.overlap(this.bulb, this.waterbowDeathZone) ||
+            this.physics.overlap(this.battery, this.waterbowDeathZone)
+        )
       this.scene.restart();
-=======
-    createBookshelf() {
-        this.bookshelf = this.physics.add.staticSprite(2015, 260, 'bookshelf');
-        this.bookshelf.setDepth(-1);
-        this.bookshelf.setScale(3);
-
-        this.bookshelfBody = this.physics.add.staticSprite(2015, 240);
-        this.bookshelfBody.setDepth(-1000);
-        this.bookshelfBody.setScale(8, 0.5);
-        this.bookshelfBody.refreshBody();
-
-        this.books = this.physics.add.staticSprite(1945, 185);
-        this.books.setDepth(-1000);
-        this.books.setScale(3, 2.5);
-        this.books.refreshBody();
-
-
-        this.physics.add.collider(this.bulb, this.bookshelfBody);
-        this.physics.add.collider(this.battery, this.bookshelfBody)
->>>>>>> 95ffae15c910507bcac293cccf0b6f9344b2e9a6
     }
-  }
+
 }
 
 export default GameScene;
