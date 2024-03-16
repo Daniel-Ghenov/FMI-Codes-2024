@@ -153,12 +153,17 @@ this.createRemote();
     createWaterBowl() {
         this.waterbowl = this.physics.add.staticSprite(2250, 325, 'waterbowl');
         this.waterbowl.setDepth(-1);
-        this.waterbowl.setScale(2);
+        this.waterbowl.setScale(3.5);
 
         this.waterbowlBody = this.physics.add.staticSprite(2245, 325);
         this.waterbowlBody.setDepth(-1000);
-        this.waterbowlBody.setScale(0.5);
+        this.waterbowlBody.setScale(5, 2.5);
         this.waterbowlBody.refreshBody();
+
+        this.waterbowDeathZone = this.physics.add.staticSprite(2245, 300);
+        this.waterbowDeathZone.setDepth(-1000);
+        this.waterbowDeathZone.setScale(5, 1);
+        this.waterbowDeathZone.refreshBody();
 
         this.physics.add.collider(this.bulb, this.waterbowlBody);
         this.physics.add.collider(this.battery, this.waterbowlBody)
@@ -179,7 +184,7 @@ this.createRemote();
     }
 
     createBulb() {
-        this.bulb = this.physics.add.sprite(100, 200, 'bulb');
+        this.bulb = this.physics.add.sprite(1400, 100, 'bulb');
 
         this.anims.create({
             key: 'bulbWalk',
@@ -196,7 +201,7 @@ this.createRemote();
 
     createBattery() {
 
-        this.battery = this.physics.add.sprite(100, 200, 'battery');
+        this.battery = this.physics.add.sprite(1400, 100, 'battery');
 
         this.anims.create({
             key: 'batteryWalk',
@@ -227,8 +232,7 @@ this.createRemote();
 
         this.updateFanBulbCollision();
         this.updateCamera();
-
-        //TODO add dying logic from the water bowl
+        this.checkWaterBowlDeath();
     }
 
     updateBulb() {
@@ -317,6 +321,13 @@ this.createRemote();
         }
     }
 
+    checkWaterBowlDeath() {
+        if (this.physics.overlap(this.bulb, this.waterbowDeathZone) || 
+            this.physics.overlap(this.battery, this.waterbowDeathZone) ) {
+            this.scene.restart();
+            
+        }
+    }
 
 }
 
