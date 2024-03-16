@@ -27,8 +27,8 @@ class GameScene extends Phaser.Scene {
     this.load.image("chandelier", "assets/chandelier.png");
     this.load.image("wardrobe", "assets/wardrobe.png");
     this.load.spritesheet("prism", "assets/prism-sprite.png", {
-        frameWidth: 800,
-        frameHeight: 700,
+      frameWidth: 800,
+      frameHeight: 700,
     });
     this.load.image("prism-lower", "assets/prism.png");
     this.load.image("open-wardrobe", "assets/openWardrobe.png");
@@ -198,106 +198,113 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.clockBody);
   }
 
-    createChandelier() {
-        this.chandelier = this.physics.add.staticSprite(2850, 1250, "chandelier");
-        this.chandelier.setDepth(-1);
-        this.chandelier.setScale(4);
+  createChandelier() {
+    this.chandelier = this.physics.add.staticSprite(2620, 1250, "chandelier");
+    this.chandelier.setDepth(-1);
+    this.chandelier.setScale(4);
 
-        this.chandelierBody = this.physics.add.staticSprite(2850, 220);
-        this.chandelierBody.setDepth(-1000);
-        this.chandelierBody.setScale(3.5, 1);
-        this.chandelierBody.refreshBody();
+    this.chandelierBody = this.physics.add.staticSprite(2620, 220);
+    this.chandelierBody.setDepth(-1000);
+    this.chandelierBody.setScale(3.5, 1);
+    this.chandelierBody.refreshBody();
 
-        this.physics.add.collider(this.bulb, this.chandelierBody);
-        this.physics.add.collider(this.battery, this.chandelierBody);
-    }
+    this.physics.add.collider(this.bulb, this.chandelierBody);
+    this.physics.add.collider(this.battery, this.chandelierBody);
+  }
 
-    createWardrobe() {
-        this.wardrobe = this.physics.add.staticSprite(3200, 520, "wardrobe");
-        this.wardrobe.setDepth(-1);
-        this.wardrobe.setScale(4.7);
+  createWardrobe() {
+    this.wardrobe = this.physics.add.staticSprite(3000, 520, "wardrobe");
+    this.wardrobe.setDepth(-1);
+    this.wardrobe.setScale(4.7);
 
-        this.wardrobeBody = this.physics.add.staticSprite(3200, 500);
-        this.wardrobeBody.setDepth(-1000);
-        this.wardrobeBody.setScale(11, 20);
-        this.wardrobeBody.refreshBody();
+    this.wardrobeBody = this.physics.add.staticSprite(3000, 500);
+    this.wardrobeBody.setDepth(-1000);
+    this.wardrobeBody.setScale(11, 20);
+    this.wardrobeBody.refreshBody();
 
-        this.physics.add.collider(this.bulb, this.wardrobeBody);
-        this.physics.add.collider(this.battery, this.wardrobeBody);
+    this.physics.add.collider(this.bulb, this.wardrobeBody);
+    this.physics.add.collider(this.battery, this.wardrobeBody);
+  }
+
+  createPrism() {
+    this.prism = this.physics.add.staticSprite(3521, 466, "prism");
+    this.prism.setDepth(-1);
+    this.prism.setScale(1);
+
+    this.prismBody = this.physics.add.staticSprite(3175, 300);
+    this.prismBody.setDepth(-1000);
+    this.prismBody.setScale(1, 1);
+    this.prismBody.refreshBody();
+
+    this.prismTrigger = this.physics.add.staticSprite(3155, 150);
+    this.prismTrigger.setDepth(-1000);
+    this.prismTrigger.setScale(5, 5);
+    this.prismTrigger.refreshBody();
+
+    this.anims.create({
+      key: "prismOff",
+      frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 0 }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "prismTransition",
+      frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 15 }),
+      frameRate: 10,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "prismTransitionBack",
+      frames: this.anims.generateFrameNumbers("prism", { start: 15, end: 0 }),
+      frameRate: 10,
+      repeat: 0,
+    });
+
+    this.prism.on = false;
+    this.prism.play("prismOff", true);
+
+    this.downstairsPrism = this.physics.add.staticSprite(
+      3815,
+      725,
+      "prism-lower"
+    );
+    this.downstairsPrism.setDepth(-1);
+
+    this.downstairsRemote = this.physics.add.staticSprite(3950, 660, "remote");
+    this.downstairsRemote.setDepth(10);
+    this.downstairsRemote.setScale(2);
+
+    this.physics.add.collider(this.bulb, this.prismBody);
+    this.physics.add.collider(this.battery, this.prismBody);
+
     
-    }
 
-    createPrism() {
-        this.prism = this.physics.add.staticSprite(3706, 466, "prism");
-        this.prism.setDepth(-1);
-        this.prism.setScale(1);
+  }
 
-        this.prismBody = this.physics.add.staticSprite(3360, 300);
-        this.prismBody.setDepth(-1000);
-        this.prismBody.setScale(1, 1);
-        this.prismBody.refreshBody();
+  createOpenWardrobe() {
+    this.openWardrobe = this.physics.add.staticSprite(
+      4350,
+      435,
+      "open-wardrobe"
+    );
+    this.openWardrobe.setDepth(-1);
+    this.openWardrobe.setScale(4.7);
 
-        this.prismTrigger = this.physics.add.staticSprite(3340, 150);
-        this.prismTrigger.setDepth(-1000);
-        this.prismTrigger.setScale(5, 5);
-        this.prismTrigger.refreshBody();
+    this.secondWardrobe = this.physics.add.staticSprite(4800, 450, "wardrobe");
+    this.secondWardrobe.setDepth(-1);
+    this.secondWardrobe.setScale(4.7);
+    this.secondWardrobe.refreshBody();
 
-        this.anims.create({
-            key: "prismOff",
-            frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 0 }),
-            frameRate: 10,
-            repeat: -1,
-        });
+    this.secondWardrobeBody = this.physics.add.staticSprite(4800, 450);
+    this.secondWardrobeBody.setDepth(-1000);
+    this.secondWardrobeBody.setScale(11, 20);
+    this.secondWardrobeBody.refreshBody();
 
-        this.anims.create({
-            key: "prismTransition",
-            frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 15 }),
-            frameRate: 10,
-            repeat: 0,
-        });
-
-
-        this.anims.create({
-            key: "prismTransitionBack",
-            frames: this.anims.generateFrameNumbers("prism", { start: 15, end: 0 }),
-            frameRate: 10,
-            repeat: 0,
-        });
-
-        this.prism.on = false;
-        this.prism.play("prismOff", true);
-
-        this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
-        this.downstairsPrism.setDepth(-1);
-
-
-        this.downstairsRemote = this.physics.add.staticSprite(4250, 660, "remote");
-        this.downstairsRemote.setDepth(10);
-        this.downstairsRemote.setScale(2);
-
-        this.physics.add.collider(this.bulb, this.prismBody);
-        this.physics.add.collider(this.battery, this.prismBody);
-    }
-
-    createOpenWardrobe() {
-        this.openWardrobe = this.physics.add.staticSprite(4600, 435, "open-wardrobe");
-        this.openWardrobe.setDepth(-1);
-        this.openWardrobe.setScale(4.7);
-
-
-        this.secondWardrobe = this.physics.add.staticSprite(5050, 450, "wardrobe");
-        this.secondWardrobe.setDepth(-1);
-        this.secondWardrobe.setScale(4.7);
-        this.secondWardrobe.refreshBody();
-
-        this.secondWardrobeBody = this.physics.add.staticSprite(5050, 450);
-        this.secondWardrobeBody.setDepth(-1000);
-        this.secondWardrobeBody.setScale(11, 20);
-        this.secondWardrobeBody.refreshBody();
-
-        this.physics.add.collider(this.bulb, this.secondWardrobeBody);
-        this.physics.add.collider(this.battery, this.secondWardrobeBody);
-    }
+    this.physics.add.collider(this.bulb, this.secondWardrobeBody);
+    this.physics.add.collider(this.battery, this.secondWardrobeBody);
+  }
 
   createTable() {
     this.table = this.physics.add.staticSprite(2050, 700, "table");
@@ -333,7 +340,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBookshelf() {
-    this.bookshelf = this.physics.add.staticSprite(2015, 270, 'bookshelf');
+    this.bookshelf = this.physics.add.staticSprite(2015, 270, "bookshelf");
     this.bookshelf.setDepth(-1);
     this.bookshelf.setScale(3);
 
@@ -355,10 +362,10 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.books);
     this.physics.add.collider(this.battery, this.books);
     this.physics.add.collider(this.bulb, this.bookshelfBody);
-    this.physics.add.collider(this.battery, this.bookshelfBody)
+    this.physics.add.collider(this.battery, this.bookshelfBody);
     this.physics.add.collider(this.bulb, this.stepBook);
     this.physics.add.collider(this.battery, this.stepBook);
-}
+  }
 
   createBulb() {
     this.bulb = this.physics.add.sprite(3200, 100, "bulb");
@@ -496,28 +503,27 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-    checkWaterBowlDeath() {
-        if (
-            this.physics.overlap(this.bulb, this.waterbowDeathZone) ||
-            this.physics.overlap(this.battery, this.waterbowDeathZone)
-        )
+  checkWaterBowlDeath() {
+    if (
+      this.physics.overlap(this.bulb, this.waterbowDeathZone) ||
+      this.physics.overlap(this.battery, this.waterbowDeathZone)
+    )
       this.scene.restart();
-    }
+  }
 
-    updatePrism() {
-        if (this.physics.overlap(this.bulb, this.prismTrigger)) {
-            if (!this.prism.on) {
-                this.prism.play("prismTransition", true);
-            }
-            this.prism.on = true;
-        } else {
-            if (this.prism.on) {
-                this.prism.play("prismTransitionBack", true);
-                this.prism.on = false;
-            }
-        }
+  updatePrism() {
+    if (this.physics.overlap(this.bulb, this.prismTrigger)) {
+      if (!this.prism.on) {
+        this.prism.play("prismTransition", true);
+      }
+      this.prism.on = true;
+    } else {
+      if (this.prism.on) {
+        this.prism.play("prismTransitionBack", true);
+        this.prism.on = false;
+      }
     }
-
+  }
 }
 
 export default GameScene;
