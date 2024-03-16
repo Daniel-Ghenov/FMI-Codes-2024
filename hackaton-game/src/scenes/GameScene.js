@@ -5,10 +5,10 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg", "assets/bg.png");
-        this.load.image("chair", "assets/chair.png")
+        this.load.image("chair", "assets/chair-2.png")
         this.load.spritesheet('bulb', 'assets/bulb.png', {
-            frameWidth: 45,
-            frameHeight: 48,
+            frameWidth: 53.6,
+            frameHeight: 100,
         });
         this.load.spritesheet('battery', 'assets/battery.png', {
             frameWidth: 45,
@@ -47,10 +47,12 @@ class GameScene extends Phaser.Scene {
     createChair() {
         this.chair = this.physics.add.staticSprite(700, 630, 'chair');
         this.chair.setDepth(-1);
-        this.chair.setScale(3.3);
+        this.chair.setScale(1.7);
 
         this.chairCussion = this.physics.add.staticSprite(700, 650);
         this.chairCussion.setDepth(-1000);
+        this.chairCussion.setScale(5, 1);
+        this.chairCussion.refreshBody();
 
         this.physics.add.collider(this.bulb, this.chairCussion);
         this.physics.add.collider(this.battery, this.chairCussion)
@@ -59,11 +61,10 @@ class GameScene extends Phaser.Scene {
 
     createBulb() {
         this.bulb = this.physics.add.sprite(100, 200, 'bulb');
-        this.bulb.setScale(1.2);
 
         this.anims.create({
             key: 'bulbWalk',
-            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 4 }),
             frameRate: 10,
             repeat: -1
         });
@@ -95,16 +96,29 @@ class GameScene extends Phaser.Scene {
 
     updateBulb() {
         const speed = 160;
+        this.bulb.play('bulbWalk', true);
   
         if (this.keys.left.isDown) {
             this.bulb.setVelocityX(-speed);
-            this.bulb.play('bulbWalk', true);
+            if (!this.bulb.body.touching.down){
+                this.bulb.anims.stop();
+            } else {
+                this.bulb.play('bulbWalk', true);
+            }
         } else if (this.keys.right.isDown) {
             this.bulb.setVelocityX(speed);
-            this.bulb.play('bulbWalk', true);
+            if (!this.bulb.body.touching.down){
+                this.bulb.anims.stop();
+            } else {
+                this.bulb.play('bulbWalk', true);
+            }
         } else {
             this.bulb.setVelocityX(0);
-            this.bulb.anims.stop();
+            if (!this.bulb.body.touching.down){
+                this.bulb.anims.stop();
+            }  else {
+                this.bulb.play('bulbWalk', true);
+            }
         }
         
         if (this.keys.up.isDown && this.bulb.body.touching.down) {
@@ -117,11 +131,19 @@ class GameScene extends Phaser.Scene {
 
         if (this.keys.p2left.isDown) {
             this.battery.setVelocityX(-speed);
-            this.battery.play('batteryWalk', true);
+            if (!this.battery.body.touching.down){
+                this.battery.anims.stop();
+            }  else {
+                this.battery.play('batteryWalk', true);
+            }
 
         } else if (this.keys.p2right.isDown) {
             this.battery.setVelocityX(speed);
-            this.battery.play('batteryWalk', true);
+            if (!this.battery.body.touching.down){
+                this.battery.anims.stop();
+            }  else {
+                this.battery.play('batteryWalk', true);
+            }
         } else {
             this.battery.setVelocityX(0);
             this.battery.anims.stop();
