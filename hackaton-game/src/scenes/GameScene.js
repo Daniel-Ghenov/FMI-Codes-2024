@@ -5,9 +5,9 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg", "assets/bg.png");
-        this.load.image("chair", "assets/chair.png")
+        this.load.image("chair", "assets/chair-2.png")
         this.load.spritesheet('bulb', 'assets/bulb.png', {
-            frameWidth: 45,
+            frameWidth: 38,
             frameHeight: 48,
         });
         this.load.spritesheet('battery', 'assets/battery.png', {
@@ -47,10 +47,12 @@ class GameScene extends Phaser.Scene {
     createChair() {
         this.chair = this.physics.add.staticSprite(700, 630, 'chair');
         this.chair.setDepth(-1);
-        this.chair.setScale(3.3);
+        this.chair.setScale(1.7);
 
         this.chairCussion = this.physics.add.staticSprite(700, 650);
         this.chairCussion.setDepth(-1000);
+        this.chairCussion.setScale(5, 1);
+        this.chairCussion.refreshBody();
 
         this.physics.add.collider(this.bulb, this.chairCussion);
         this.physics.add.collider(this.battery, this.chairCussion)
@@ -63,7 +65,14 @@ class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'bulbWalk',
-            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'bulbWalkLeft',
+            frames: this.anims.generateFrameNumbers('bulb', { start: 5, end: 9 }),
             frameRate: 10,
             repeat: -1
         });
@@ -98,7 +107,7 @@ class GameScene extends Phaser.Scene {
   
         if (this.keys.left.isDown) {
             this.bulb.setVelocityX(-speed);
-            this.bulb.play('bulbWalk', true);
+            this.bulb.play('bulbWalkLeft', true);
         } else if (this.keys.right.isDown) {
             this.bulb.setVelocityX(speed);
             this.bulb.play('bulbWalk', true);
