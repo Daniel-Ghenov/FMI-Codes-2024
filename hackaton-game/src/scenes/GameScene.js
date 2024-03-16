@@ -19,7 +19,6 @@ class GameScene extends Phaser.Scene {
             frameWidth: 50,
             frameHeight: 50,
         });
-        // this.load.image('fan', 'assets/fan.png');
         this.load.image('table', 'assets/table.png');
     }
     create() {
