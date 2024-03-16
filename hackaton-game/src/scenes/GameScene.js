@@ -4,61 +4,119 @@ class GameScene extends Phaser.Scene {
     }
     
     preload() {
-        this.load.image("bg", "assets/bg.png", { frameWidth: 800, frameHeight: 600 });
-        this.load.spritesheet('character', 'assets/bulb.png', {
-            frameWidth: 45,
+        this.load.image("bg", "assets/bg.png");
+        this.load.image("chair", "assets/chair-2.png")
+        this.load.spritesheet('bulb', 'assets/bulb.png', {
+            frameWidth: 38,
             frameHeight: 48,
+        });
+        this.load.spritesheet('battery', 'assets/battery.png', {
+            frameWidth: 45,
+            frameHeight: 60,
         });
     }
     create() {
-        // this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
-        // this.bg.displayWidth = this.sys.game.config.width;
-        // this.bg.displayHeight = this.sys.game.config.height;
-        // this.bg.setDepth(-2);
-        this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg");
-        this.bg.setOrigin(0, 0);
-
-        this.character = this.physics.add.sprite(100, 200, "character");
-        this.character.setScale(1.2);
-
-        this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNumbers('character', { start: 0, end: 4 }),
-            frameRate: 10,
-            repeat: -1
-          });
+        let bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
+        bg.setDepth(-100);
 
         this.floor = this.physics.add.staticSprite(300, 750, 'floor');
+
+        this.floor.displayWidth = this.sys.game.config.width;
+        this.floor.refreshBody(); 
+
+        this.createBulb();
+        this.createBattery();
+
+        this.createChair();
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             left: Phaser.Input.Keyboard.KeyCodes.A,
             down: Phaser.Input.Keyboard.KeyCodes.S,
             right: Phaser.Input.Keyboard.KeyCodes.D,
-          });
 
-        this.floor.displayWidth = this.sys.game.config.width;
-        this.floor.refreshBody(); 
-        this.physics.add.collider(this.character, this.floor);
-        this.character.setCollideWorldBounds(true);
+            p2up: Phaser.Input.Keyboard.KeyCodes.UP,
+            p2left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+            p2down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+            p2right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+        });
+
     }   
 
+    createChair() {
+        this.chair = this.physics.add.staticSprite(700, 630, 'chair');
+        this.chair.setDepth(-1);
+        this.chair.setScale(1.7);
+
+        this.chairCussion = this.physics.add.staticSprite(700, 650);
+        this.chairCussion.setDepth(-1000);
+        this.chairCussion.setScale(5, 1);
+        this.chairCussion.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.chairCussion);
+        this.physics.add.collider(this.battery, this.chairCussion)
+
+    }
+
+    createBulb() {
+        this.bulb = this.physics.add.sprite(100, 200, 'bulb');
+        this.bulb.setScale(1.2);
+
+        this.anims.create({
+            key: 'bulbWalk',
+            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'bulbWalkLeft',
+            frames: this.anims.generateFrameNumbers('bulb', { start: 5, end: 9 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.physics.add.collider(this.bulb, this.floor);
+        this.bulb.setCollideWorldBounds(true);
+    }
+
+    createBattery() {
+
+        this.battery = this.physics.add.sprite(100, 200, 'battery');
+        this.battery.setScale(1.2);
+
+        this.anims.create({
+            key: 'batteryWalk',
+            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.physics.add.collider(this.battery, this.floor);
+        this.battery.setCollideWorldBounds(true);
+    }
+
     update() {
+        this.updateBulb();
+        this.updateBattery();
+    }
+
+    updateBulb() {
         const speed = 160;
   
         if (this.keys.left.isDown) {
-          this.character.setVelocityX(-speed);
-          this.character.play('walk', true);
+            this.bulb.setVelocityX(-speed);
+            this.bulb.play('bulbWalkLeft', true);
         } else if (this.keys.right.isDown) {
-          this.character.setVelocityX(speed);
-          this.character.play('walk', true);
+            this.bulb.setVelocityX(speed);
+            this.bulb.play('bulbWalk', true);
         } else {
-          this.character.setVelocityX(0);
-          this.character.play('idle', true);
+            this.bulb.setVelocityX(0);
+            this.bulb.anims.stop();
         }
         
-        if (this.keys.up.isDown && this.character.body.touching.down) {
-          this.character.setVelocityY(-330);
+        if (this.keys.up.isDown && this.bulb.body.touching.down) {
+            this.bulb.setVelocityY(-330);
         }
 
         // this.bg.tilePositionX += 1;
@@ -67,6 +125,29 @@ class GameScene extends Phaser.Scene {
             this.character.x = 0;
         }
     }
+
+    updateBattery() {
+        const speed = 160;
+
+        if (this.keys.p2left.isDown) {
+            this.battery.setVelocityX(-speed);
+            this.battery.play('batteryWalk', true);
+
+        } else if (this.keys.p2right.isDown) {
+            this.battery.setVelocityX(speed);
+            this.battery.play('batteryWalk', true);
+        } else {
+            this.battery.setVelocityX(0);
+            this.battery.anims.stop();
+        }
+        
+        if (this.keys.p2up.isDown && this.battery.body.touching.down) {
+            this.battery.setVelocityY(-330);
+        }    
+
+    }
+
+
 }
 
 export default GameScene;
