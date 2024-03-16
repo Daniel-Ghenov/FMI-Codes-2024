@@ -16,7 +16,11 @@ class GameScene extends Phaser.Scene {
             frameWidth: 47.1,
             frameHeight: 100,
         });
-        this.load.image('fan', 'assets/fan.png');
+        this.load.spritesheet('fan', 'assets/fan.png', {
+            frameWidth: 50,
+            frameHeight: 50,
+        });
+        // this.load.image('fan', 'assets/fan.png');
         this.load.image('table', 'assets/table.png');
     }
     create() {
@@ -106,6 +110,13 @@ class GameScene extends Phaser.Scene {
         this.fanStream.setDepth(-1000);
         this.fanStream.setScale(4, 16);
         this.fanStream.refreshBody();
+
+        this.anims.create({
+            key: 'fanOn',
+            frames: this.anims.generateFrameNumbers('fan', { start: 0, end: 3 }),
+            frameRate: 5,
+            repeat: -1
+        });
 
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
@@ -255,8 +266,11 @@ class GameScene extends Phaser.Scene {
 
     updateFanBulbCollision() {
         if (!this.fan.isOn) {
+            this.fan.anims.stop();
             return;
         }
+
+        this.fan.play('fanOn', true);
 
         if (this.physics.overlap(this.bulb, this.fanStream)) {
             this.bulb.setVelocityY(-300);
