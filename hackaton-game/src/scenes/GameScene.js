@@ -21,6 +21,7 @@ this.load.image('remote', 'assets/remote.png')
             frameHeight: 50,
         });
         this.load.image('table', 'assets/table.png');
+        this.load.image('waterbowl', 'assets/waterbowl.png');
     }
     create() {
         
@@ -28,15 +29,7 @@ this.load.image('remote', 'assets/remote.png')
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
         
-<<<<<<< Updated upstream
         this.physics.world.setBounds(0, -100, 3000, 1000);
-=======
-        
-        this.physics.world.setBounds(0, 0, 3000, 900);
-
-
-        this.physics.world.setBounds(0, 0, 3000, 900);
->>>>>>> Stashed changes
 
         this.createFloor();
 
@@ -45,6 +38,8 @@ this.load.image('remote', 'assets/remote.png')
 
         this.createChair();
         this.createDrawers();
+
+        this.createWaterBowl();
 this.createRemote();
 
         this.createFan();
@@ -126,27 +121,31 @@ this.createRemote();
     }
 
     createTable() {
-<<<<<<< Updated upstream
-        this.table = this.physics.add.staticSprite(2050, 520, 'table');
-=======
         this.table = this.physics.add.staticSprite(2200, 700, 'table');
->>>>>>> Stashed changes
         this.table.setDepth(-1);
         this.table.setScale(5, 5);
 
-<<<<<<< Updated upstream
-        this.tableBody = this.physics.add.staticSprite(2050, 520);
-        this.tableBody.setDepth(-1000);
-        this.tableBody.setScale(17.5, 15);
-=======
         this.tableBody = this.physics.add.staticSprite(2200, 700);
         this.tableBody.setDepth(-1000);
         this.tableBody.setScale(27, 21);
->>>>>>> Stashed changes
         this.tableBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.tableBody);
         this.physics.add.collider(this.battery, this.tableBody)
+    }
+
+    createWaterBowl() {
+        this.waterbowl = this.physics.add.staticSprite(2200, 320, 'waterbowl');
+        this.waterbowl.setDepth(-1);
+        this.waterbowl.setScale(3);
+
+        this.waterbowlBody = this.physics.add.staticSprite(2200, 320);
+        this.waterbowlBody.setDepth(-1000);
+        this.waterbowlBody.setScale(3, 3);
+        this.waterbowlBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.waterbowlBody);
+        this.physics.add.collider(this.battery, this.waterbowlBody)
     }
 
     createBulb() {
@@ -162,6 +161,8 @@ this.createRemote();
         this.physics.add.collider(this.bulb, this.floor);
         this.bulb.setCollideWorldBounds(true);
     }
+
+    
 
     createBattery() {
 
@@ -198,6 +199,8 @@ this.createRemote();
         this.fan.isOn = isRemoteOn;
 
         this.updateFanBulbCollision();
+
+        //TODO add dying logic from the water bowl
     }
 
     updateBulb() {
@@ -282,6 +285,8 @@ this.createRemote();
             this.bulb.setVelocityY(-300);
         }
     }
+
+
 }
 
 export default GameScene;
