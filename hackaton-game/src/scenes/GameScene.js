@@ -62,11 +62,11 @@ class GameScene extends Phaser.Scene {
     }
 
     createDrawers() {
-        this.drawers = this.physics.add.staticSprite(1230, 550, 'drawers');
+        this.drawers = this.physics.add.staticSprite(1250, 530, 'drawers');
         this.drawers.setDepth(-1);
         this.drawers.setScale(3.5);
 
-        this.drawersBody = this.physics.add.staticSprite(1220, 500);
+        this.drawersBody = this.physics.add.staticSprite(1225, 480);
         this.drawersBody.setDepth(-1000);
         this.drawersBody.setScale(18.6, 11);
         this.drawersBody.refreshBody();
@@ -189,7 +189,7 @@ class GameScene extends Phaser.Scene {
         }
         
         if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-            this.battery.setVelocityY(-400);
+            this.battery.setVelocityY(-450);
         }    
 
     }
