@@ -70,11 +70,11 @@ class GameScene extends Phaser.Scene {
     }
 
     createChair() {
-        this.chair = this.physics.add.staticSprite(700, 535, 'chair');
+        this.chair = this.physics.add.staticSprite(700, 560, 'chair');
         this.chair.setDepth(-1);
         this.chair.setScale(3.4);
 
-        this.chairCussion = this.physics.add.staticSprite(700, 620);
+        this.chairCussion = this.physics.add.staticSprite(700, 600);
         this.chairCussion.setDepth(-1000);
         this.chairCussion.setScale(12, 3);
         this.chairCussion.refreshBody();
@@ -84,11 +84,11 @@ class GameScene extends Phaser.Scene {
     }
 
     createDrawers() {
-        this.drawers = this.physics.add.staticSprite(1230, 550, 'drawers');
+        this.drawers = this.physics.add.staticSprite(1250, 520, 'drawers');
         this.drawers.setDepth(-1);
         this.drawers.setScale(3.5);
 
-        this.drawersBody = this.physics.add.staticSprite(1220, 500);
+        this.drawersBody = this.physics.add.staticSprite(1225, 470);
         this.drawersBody.setDepth(-1000);
         this.drawersBody.setScale(18.6, 11);
         this.drawersBody.refreshBody();
@@ -194,12 +194,6 @@ class GameScene extends Phaser.Scene {
         if (this.keys.up.isDown && this.bulb.body.touching.down) {
             this.bulb.setVelocityY(-200);
         }
-
-        // this.bg.tilePositionX += 1;
-
-        if (this.bulb.x >= this.sys.game.config.width) {
-            this.bulb.x = 0;
-        }
     }
 
     updateBattery() {
@@ -230,7 +224,7 @@ class GameScene extends Phaser.Scene {
         }
         
         if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-            this.battery.setVelocityY(-400);
+            this.battery.setVelocityY(-450);
         }    
 
     }
