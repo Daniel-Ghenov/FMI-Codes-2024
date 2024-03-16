@@ -17,6 +17,7 @@ class GameScene extends Phaser.Scene {
             frameHeight: 100,
         });
         this.load.image('fan', 'assets/fan.png');
+        this.load.image('table', 'assets/table.png');
     }
     create() {
         
@@ -47,8 +48,7 @@ class GameScene extends Phaser.Scene {
         this.createRemote();
 
         this.createFan();
-
-        
+        this.createTable();
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -112,12 +112,26 @@ class GameScene extends Phaser.Scene {
 
         this.fanBody = this.physics.add.staticSprite(1635, 700);
         this.fanBody.setDepth(-1000);
-        this.fanBody.setScale(3.5, 3.5);
+        this.fanBody.setScale(3.5, 1.5);
         this.fanBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
 
+    }
+
+    createTable() {
+        this.table = this.physics.add.staticSprite(2000, 700, 'table');
+        this.table.setDepth(-1);
+        this.table.setScale(3.5);
+
+        this.tableBody = this.physics.add.staticSprite(2000, 700);
+        this.tableBody.setDepth(-1000);
+        this.tableBody.setScale(10.5, 10.5);
+        this.tableBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.tableBody);
+        this.physics.add.collider(this.battery, this.tableBody)
     }
 
     createBulb() {
