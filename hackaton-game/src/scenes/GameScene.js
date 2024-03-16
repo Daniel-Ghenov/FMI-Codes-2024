@@ -11,10 +11,12 @@ class GameScene extends Phaser.Scene {
         });
     }
     create() {
-        this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
-        this.bg.displayWidth = this.sys.game.config.width;
-        this.bg.displayHeight = this.sys.game.config.height;
+        // this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
+        // this.bg.displayWidth = this.sys.game.config.width;
+        // this.bg.displayHeight = this.sys.game.config.height;
         // this.bg.setDepth(-2);
+        this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg");
+        this.bg.setOrigin(0, 0);
 
         this.character = this.physics.add.sprite(100, 200, "character");
         this.character.setScale(1.2);
@@ -59,7 +61,11 @@ class GameScene extends Phaser.Scene {
           this.character.setVelocityY(-330);
         }
 
-        this.bg.tilePositionX -= 0.5;
+        // this.bg.tilePositionX += 1;
+
+        if (this.character.x >= this.sys.game.config.width) {
+            this.character.x = 0;
+        }
     }
 }
 
