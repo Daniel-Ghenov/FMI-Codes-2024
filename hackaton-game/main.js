@@ -11,6 +11,11 @@ const config = {
       debug: true,
     },
   },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    parent: 'game-container',
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+},
   scene: GameScene,
 };
 

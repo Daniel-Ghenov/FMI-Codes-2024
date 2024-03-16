@@ -5,21 +5,29 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg", "assets/bg.png");
-        this.load.image("chair", "assets/chair-2.png")
+        this.load.image("chair", "assets/chair.png")
         this.load.spritesheet('bulb', 'assets/bulb.png', {
             frameWidth: 53.6,
             frameHeight: 100,
         });
         this.load.spritesheet('battery', 'assets/battery.png', {
-            frameWidth: 45,
-            frameHeight: 60,
+            frameWidth: 37.1,
+            frameHeight: 100,
         });
     }
 
     create() {
         this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
-        this.bg.setScale(3.83);
+
+        let viewportWidth = this.sys.game.config.width;
+        let viewportHeight = this.sys.game.config.height;
+
+        let scaleX = viewportWidth / this.bg.width;
+        let scaleY = viewportHeight / this.bg.height;
+
+        this.bg.setScale(scaleX, scaleY);
+
 
         this.floor = this.physics.add.staticSprite(500, 750, 'floor');
         this.floor.displayWidth = this.sys.game.config.width;
@@ -50,9 +58,9 @@ class GameScene extends Phaser.Scene {
         this.chair.setDepth(-1);
         this.chair.setScale(3);
 
-        this.chairCussion = this.physics.add.staticSprite(700, 565);
+        this.chairCussion = this.physics.add.staticSprite(700, 575);
         this.chairCussion.setDepth(-1000);
-        this.chairCussion.setScale(5, 1);
+        this.chairCussion.setScale(10, 1);
         this.chairCussion.refreshBody();
 
         this.physics.add.collider(this.bulb, this.chairCussion);
@@ -65,7 +73,7 @@ class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'bulbWalk',
-            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 4 }),
+            frames: this.anims.generateFrameNumbers('bulb', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
@@ -77,11 +85,10 @@ class GameScene extends Phaser.Scene {
     createBattery() {
 
         this.battery = this.physics.add.sprite(100, 200, 'battery');
-        this.battery.setScale(1.2);
 
         this.anims.create({
             key: 'batteryWalk',
-            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
