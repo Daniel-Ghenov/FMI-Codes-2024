@@ -6,6 +6,7 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image("bg", "assets/bg.png");
         this.load.image("chair", "assets/chair.png")
+        this.load.image('drawers', 'assets/drawers.png')
         this.load.spritesheet('bulb', 'assets/bulb.png', {
             frameWidth: 53.6,
             frameHeight: 100,
@@ -28,7 +29,7 @@ class GameScene extends Phaser.Scene {
         this.bg.setScale(scaleX, scaleY);
 
 
-        this.floor = this.physics.add.staticSprite(500, 750, 'floor');
+        this.floor = this.physics.add.staticSprite(500, 770, 'floor');
         this.floor.displayWidth = this.sys.game.config.width;
         this.floor.setDepth(-1000);
         this.floor.refreshBody(); 
@@ -36,7 +37,8 @@ class GameScene extends Phaser.Scene {
         this.createBulb();
         this.createBattery();
 
-        this.createChair();
+        // this.createChair();
+        this.createDrawers();
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -55,16 +57,29 @@ class GameScene extends Phaser.Scene {
     createChair() {
         this.chair = this.physics.add.staticSprite(700, 535, 'chair');
         this.chair.setDepth(-1);
-        this.chair.setScale(3);
+        this.chair.setScale(3.4);
 
-        this.chairCussion = this.physics.add.staticSprite(700, 575);
+        this.chairCussion = this.physics.add.staticSprite(700, 620);
         this.chairCussion.setDepth(-1000);
-        this.chairCussion.setScale(10, 1);
+        this.chairCussion.setScale(12, 3);
         this.chairCussion.refreshBody();
 
         this.physics.add.collider(this.bulb, this.chairCussion);
         this.physics.add.collider(this.battery, this.chairCussion)
+    }
 
+    createDrawers() {
+        this.drawers = this.physics.add.staticSprite(1000, 550, 'drawers');
+        this.drawers.setDepth(-1);
+        this.drawers.setScale(3.5);
+
+        this.drawersBody = this.physics.add.staticSprite(1000, 620);
+        this.drawersBody.setDepth(-1000);
+        this.drawersBody.setScale(12, 3);
+        this.drawersBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.drawersBody);
+        this.physics.add.collider(this.battery, this.drawersBody)
     }
 
     createBulb() {
