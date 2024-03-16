@@ -2,18 +2,19 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super("GameScene");
     }
-
+    
     preload() {
-        this.load.image("bg", "assets/bg.png");
+        this.load.image("bg", "assets/bg.png", { frameWidth: 800, frameHeight: 600 });
         this.load.spritesheet('character', 'assets/bulb.png', {
             frameWidth: 45,
             frameHeight: 48,
         });
     }
-
     create() {
-        let bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
-        bg.setDepth(-2);
+        this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
+        this.bg.displayWidth = this.sys.game.config.width;
+        this.bg.displayHeight = this.sys.game.config.height;
+        // this.bg.setDepth(-2);
 
         this.character = this.physics.add.sprite(100, 200, "character");
         this.character.setScale(1.2);
@@ -57,9 +58,9 @@ class GameScene extends Phaser.Scene {
         if (this.keys.up.isDown && this.character.body.touching.down) {
           this.character.setVelocityY(-330);
         }
+
+        this.bg.tilePositionX -= 0.5;
     }
-
-
 }
 
 export default GameScene;
