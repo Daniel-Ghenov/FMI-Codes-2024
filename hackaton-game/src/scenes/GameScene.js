@@ -6,6 +6,10 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image("bg", "assets/bg.png");
         this.load.image("character", "assets/player1.png")
+        this.load.spritesheet('character', 'assets/spritesheet.png', {
+            frameWidth: 32,
+            frameHeight: 48,
+          });
     }
 
     create() {
@@ -14,7 +18,7 @@ class GameScene extends Phaser.Scene {
 
         this.character = this.physics.add.sprite(100, 200, "character");
         this.character.setScale(0.8);
-        this.floor = this.physics.add.staticSprite(300, 750, 'floor');
+        this.floor = this.physics.add.staticSprite(1000, 750, 'floor');
 
         this.floor.displayWidth = this.sys.game.config.width;
         this.floor.refreshBody(); 
