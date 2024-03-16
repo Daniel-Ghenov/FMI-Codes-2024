@@ -22,6 +22,7 @@ this.load.image('remote', 'assets/remote.png')
         });
         this.load.image('table', 'assets/table.png');
         this.load.image('waterbowl', 'assets/waterbowl.png');
+        this.load.image('bookshelf', 'assets/bookshelf.png');
     }
     create() {
         
@@ -40,6 +41,7 @@ this.load.image('remote', 'assets/remote.png')
         this.createDrawers();
 
         this.createWaterBowl();
+        this.createBookshelf();
 this.createRemote();
 
         this.createFan();
@@ -112,7 +114,7 @@ this.createRemote();
 
         this.fanStream = this.physics.add.staticSprite(1640, 540);
         this.fanStream.setDepth(-1000);
-        this.fanStream.setScale(4, 16);
+        this.fanStream.setScale(4, 25);
         this.fanStream.refreshBody();
 
         this.physics.add.collider(this.bulb, this.fanBody);
@@ -135,17 +137,31 @@ this.createRemote();
     }
 
     createWaterBowl() {
-        this.waterbowl = this.physics.add.staticSprite(2200, 320, 'waterbowl');
+        this.waterbowl = this.physics.add.staticSprite(2250, 325, 'waterbowl');
         this.waterbowl.setDepth(-1);
-        this.waterbowl.setScale(3);
+        this.waterbowl.setScale(2);
 
-        this.waterbowlBody = this.physics.add.staticSprite(2200, 320);
+        this.waterbowlBody = this.physics.add.staticSprite(2245, 325);
         this.waterbowlBody.setDepth(-1000);
-        this.waterbowlBody.setScale(3, 3);
+        this.waterbowlBody.setScale(0.5);
         this.waterbowlBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.waterbowlBody);
         this.physics.add.collider(this.battery, this.waterbowlBody)
+    }
+
+    createBookshelf() {
+        this.bookshelf = this.physics.add.staticSprite(2015, 260, 'bookshelf');
+        this.bookshelf.setDepth(-1);
+        this.bookshelf.setScale(3);
+
+        this.bookshelfBody = this.physics.add.staticSprite(2015, 230);
+        this.bookshelfBody.setDepth(-1000);
+        this.bookshelfBody.setScale(6, 2);
+        this.bookshelfBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.bookshelfBody);
+        this.physics.add.collider(this.battery, this.bookshelfBody)
     }
 
     createBulb() {
