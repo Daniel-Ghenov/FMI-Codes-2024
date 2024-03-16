@@ -46,7 +46,7 @@ class GameScene extends Phaser.Scene {
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
 
-    this.physics.world.setBounds(0, -100, 8000, 1000);
+    this.matter.world.setBounds(0, -100, 8000, 1000);
 
     this.createFloor();
 
@@ -266,6 +266,11 @@ class GameScene extends Phaser.Scene {
 
         this.prism.on = false;
         this.prism.play("prismOff", true);
+
+        this.matter.add.rectangle(3340, 150, 400, 20, {
+            isStatic: true,
+            angle: Math.PI / 6 
+        });
 
         this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
         this.downstairsPrism.setDepth(-1);
