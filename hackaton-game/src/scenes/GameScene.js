@@ -17,7 +17,8 @@ class GameScene extends Phaser.Scene {
         });
     }
     create() {
-        this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
+        
+        this.bg = this.add.tileSprite(0, 0, this.sys.game.config.width, this.sys.game.config.height, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
 
         let viewportWidth = this.sys.game.config.width;
