@@ -24,19 +24,6 @@ class GameScene extends Phaser.Scene {
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
 
-        // let viewportWidth = this.sys.game.config.width;
-        // let viewportHeight = this.sys.game.config.height;
-
-        // let scaleX = viewportWidth / this.bg.width;
-        // let scaleY = viewportHeight / this.bg.height;
-
-        // this.bg.setScale(scaleX, scaleY);
-
-
-        // this.floor = this.physics.add.staticSprite(500, 770, 'floor');
-        // this.floor.setScale(1000, 1);
-        // this.floor.setDepth(-1000);
-        // this.floor.refreshBody(); 
         this.createFloor();
 
         this.createBulb();
@@ -106,14 +93,19 @@ class GameScene extends Phaser.Scene {
 
     }
     createFan() {
-        this.fan = this.physics.add.staticSprite(1635, 700, 'fan');
+        this.fan = this.physics.add.staticSprite(1640, 700, 'fan');
         this.fan.setDepth(-1);
         this.fan.setScale(3.5);
 
-        this.fanBody = this.physics.add.staticSprite(1635, 700);
+        this.fanBody = this.physics.add.staticSprite(1640, 740);
         this.fanBody.setDepth(-1000);
-        this.fanBody.setScale(3.5, 3.5);
+        this.fanBody.setScale(4, 1.2);
         this.fanBody.refreshBody();
+
+        this.fanStream = this.physics.add.staticSprite(1640, 540);
+        this.fanStream.setDepth(-1000);
+        this.fanStream.setScale(4, 16);
+        this.fanStream.refreshBody();
 
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
@@ -169,6 +161,9 @@ class GameScene extends Phaser.Scene {
         this.updateCamera();
         
         var isRemoteOn = this.physics.overlap(this.battery, this.remote);
+        this.fan.isOn = isRemoteOn;
+
+        this.updateFanBulbCollision();
     }
 
     updateBulb() {
@@ -244,6 +239,15 @@ class GameScene extends Phaser.Scene {
         this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
     }
 
+    updateFanBulbCollision() {
+        if (!this.fan.isOn) {
+            return;
+        }
+
+        if (this.physics.overlap(this.bulb, this.fanStream)) {
+            this.bulb.setVelocityY(-300);
+        }
+    }
 
 }
 
