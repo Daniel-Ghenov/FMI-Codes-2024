@@ -114,6 +114,12 @@ class GameScene extends Phaser.Scene {
     update() {
         this.updateBulb();
         this.updateBattery();
+
+        let midpointX = (this.bulb.x + this.battery.x) / 2;
+        this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
+        
+        let worldBounds = this.physics.world.bounds;
+        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
     }
 
     updateBulb() {
