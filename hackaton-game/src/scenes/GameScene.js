@@ -11,7 +11,7 @@ class GameScene extends Phaser.Scene {
             frameHeight: 100,
         });
         this.load.spritesheet('battery', 'assets/battery.png', {
-            frameWidth: 37.1,
+            frameWidth: 47.1,
             frameHeight: 100,
         });
     }
@@ -87,7 +87,7 @@ class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'batteryWalk',
-            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 7 }),
+            frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 6 }),
             frameRate: 10,
             repeat: -1
         });
@@ -134,8 +134,8 @@ class GameScene extends Phaser.Scene {
 
         // this.bg.tilePositionX += 1;
 
-        if (this.character.x >= this.sys.game.config.width) {
-            this.character.x = 0;
+        if (this.bulb.x >= this.sys.game.config.width) {
+            this.bulb.x = 0;
         }
     }
 
