@@ -24,6 +24,8 @@ class GameScene extends Phaser.Scene {
     this.load.image("waterbowl", "assets/waterbowl.png");
     this.load.image("bookshelf", "assets/bookshelf.png");
     this.load.image("clock", "assets/clock.png");
+    this.load.image("chandelier", "assets/chandelier.png");
+    this.load.image("wardrobe", "assets/wardrobe.png");
   }
   create() {
     this.bg = this.add
@@ -38,7 +40,7 @@ class GameScene extends Phaser.Scene {
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
 
-    this.physics.world.setBounds(0, -100, 3000, 1000);
+    this.physics.world.setBounds(0, -100, 5000, 1000);
 
     this.createFloor();
 
@@ -56,6 +58,8 @@ class GameScene extends Phaser.Scene {
     this.createTable();
 
     this.createClock();
+    this.createChandelier();
+    this.createWardrobe();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -186,40 +190,35 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.clockBody);
   }
 
-  createBulb() {
-    this.bulb = this.physics.add.sprite(2000, 200, "bulb");
+    createChandelier() {
+        this.chandelier = this.physics.add.staticSprite(2850, 1250, "chandelier");
+        this.chandelier.setDepth(-1);
+        this.chandelier.setScale(4);
 
-    this.anims.create({
-      key: "bulbWalk",
-      frames: this.anims.generateFrameNumbers("bulb", { start: 0, end: 7 }),
-      frameRate: 10,
-      repeat: -1,
-    });
+        this.chandelierBody = this.physics.add.staticSprite(2850, 220);
+        this.chandelierBody.setDepth(-1000);
+        this.chandelierBody.setScale(3.5, 1);
+        this.chandelierBody.refreshBody();
 
-    this.physics.add.collider(this.bulb, this.floor);
-    this.bulb.setCollideWorldBounds(true);
-  }
+        this.physics.add.collider(this.bulb, this.chandelierBody);
+        this.physics.add.collider(this.battery, this.chandelierBody);
+    }
 
-  createBattery() {
-    this.battery = this.physics.add.sprite(2000, 200, "battery");
+    createWardrobe() {
+        this.wardrobe = this.physics.add.staticSprite(3200, 520, "wardrobe");
+        this.wardrobe.setDepth(-1);
+        this.wardrobe.setScale(4.7);
 
-    this.anims.create({
-      key: "batteryWalk",
-      frames: this.anims.generateFrameNumbers("battery", { start: 0, end: 5 }),
-      frameRate: 10,
-      repeat: -1,
-    });
+        this.wardrobeBody = this.physics.add.staticSprite(3200, 500);
+        this.wardrobeBody.setDepth(-1000);
+        this.wardrobeBody.setScale(11, 20);
+        this.wardrobeBody.refreshBody();
 
-    this.anims.create({
-      key: "batteryJump",
-      frames: this.anims.generateFrameNumbers("battery", { start: 6, end: 6 }),
-      frameRate: 10,
-      repeat: -1,
-    });
+        this.physics.add.collider(this.bulb, this.wardrobeBody);
+        this.physics.add.collider(this.battery, this.wardrobeBody);
+    
+    }
 
-    this.physics.add.collider(this.battery, this.floor);
-    this.battery.setCollideWorldBounds(true);
-  }
 
   update() {
     this.updateBulb();
@@ -354,7 +353,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.waterbowlBody);
     this.physics.add.collider(this.battery, this.waterbowlBody);
   }
-  
+
   createBookshelf() {
     this.bookshelf = this.physics.add.staticSprite(2015, 260, 'bookshelf');
     this.bookshelf.setDepth(-1);
@@ -370,13 +369,14 @@ class GameScene extends Phaser.Scene {
     this.books.setScale(3, 2.5);
     this.books.refreshBody();
 
-
+    this.physics.add.collider(this.bulb, this.books);
+    this.physics.add.collider(this.battery, this.books);
     this.physics.add.collider(this.bulb, this.bookshelfBody);
     this.physics.add.collider(this.battery, this.bookshelfBody)
 }
 
   createBulb() {
-    this.bulb = this.physics.add.sprite(1400, 100, "bulb");
+    this.bulb = this.physics.add.sprite(2850, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -390,7 +390,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(1400, 100, "battery");
+    this.battery = this.physics.add.sprite(2850, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
