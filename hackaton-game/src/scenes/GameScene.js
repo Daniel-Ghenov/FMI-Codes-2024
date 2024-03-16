@@ -29,7 +29,8 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet("prism", "assets/prism-sprite.png", {
         frameWidth: 800,
         frameHeight: 700,
-        });
+    });
+    this.load.image("prism-lower", "assets/prism.png");
   }
   create() {
     this.bg = this.add
@@ -263,6 +264,14 @@ class GameScene extends Phaser.Scene {
 
         this.prism.on = false;
         this.prism.play("prismOff", true);
+
+        this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
+        this.downstairsPrism.setDepth(-1);
+
+
+        this.downstairsRemote = this.physics.add.staticSprite(4250, 660, "remote");
+        this.downstairsRemote.setDepth(10);
+        this.downstairsRemote.setScale(2);
 
         this.physics.add.collider(this.bulb, this.prismBody);
         this.physics.add.collider(this.battery, this.prismBody);
