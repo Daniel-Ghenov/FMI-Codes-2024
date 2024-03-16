@@ -29,7 +29,9 @@ class GameScene extends Phaser.Scene {
     this.load.spritesheet("prism", "assets/prism-sprite.png", {
         frameWidth: 800,
         frameHeight: 700,
-        });
+    });
+    this.load.image("prism-lower", "assets/prism.png");
+    this.load.image("open-wardrobe", "assets/openWardrobe.png");
   }
   create() {
     this.bg = this.add
@@ -44,7 +46,7 @@ class GameScene extends Phaser.Scene {
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
 
-    this.physics.world.setBounds(0, -100, 5000, 1000);
+    this.physics.world.setBounds(0, -100, 8000, 1000);
 
     this.createFloor();
 
@@ -65,6 +67,7 @@ class GameScene extends Phaser.Scene {
     this.createChandelier();
     this.createWardrobe();
     this.createPrism();
+    this.createOpenWardrobe();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -264,8 +267,36 @@ class GameScene extends Phaser.Scene {
         this.prism.on = false;
         this.prism.play("prismOff", true);
 
+        this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
+        this.downstairsPrism.setDepth(-1);
+
+
+        this.downstairsRemote = this.physics.add.staticSprite(4250, 660, "remote");
+        this.downstairsRemote.setDepth(10);
+        this.downstairsRemote.setScale(2);
+
         this.physics.add.collider(this.bulb, this.prismBody);
         this.physics.add.collider(this.battery, this.prismBody);
+    }
+
+    createOpenWardrobe() {
+        this.openWardrobe = this.physics.add.staticSprite(4600, 435, "open-wardrobe");
+        this.openWardrobe.setDepth(-1);
+        this.openWardrobe.setScale(4.7);
+
+
+        this.secondWardrobe = this.physics.add.staticSprite(5050, 450, "wardrobe");
+        this.secondWardrobe.setDepth(-1);
+        this.secondWardrobe.setScale(4.7);
+        this.secondWardrobe.refreshBody();
+
+        this.secondWardrobeBody = this.physics.add.staticSprite(5050, 450);
+        this.secondWardrobeBody.setDepth(-1000);
+        this.secondWardrobeBody.setScale(11, 20);
+        this.secondWardrobeBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.secondWardrobeBody);
+        this.physics.add.collider(this.battery, this.secondWardrobeBody);
     }
 
   createTable() {
@@ -330,7 +361,7 @@ class GameScene extends Phaser.Scene {
 }
 
   createBulb() {
-    this.bulb = this.physics.add.sprite(2000, 100, "bulb");
+    this.bulb = this.physics.add.sprite(3200, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -344,7 +375,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(2000, 100, "battery");
+    this.battery = this.physics.add.sprite(3200, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
