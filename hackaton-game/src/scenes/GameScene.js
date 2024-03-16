@@ -30,7 +30,15 @@ this.load.image('remote', 'assets/remote.png')
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
         
+<<<<<<< Updated upstream
         this.physics.world.setBounds(0, -100, 3000, 1000);
+=======
+        
+        this.physics.world.setBounds(0, 0, 3000, 900);
+
+
+        this.physics.world.setBounds(0, 0, 3000, 900);
+>>>>>>> Stashed changes
 
         this.createFloor();
 
@@ -39,9 +47,12 @@ this.load.image('remote', 'assets/remote.png')
 
         this.createChair();
         this.createDrawers();
+<<<<<<< Updated upstream
 
         this.createWaterBowl();
         this.createBookshelf();
+=======
+>>>>>>> Stashed changes
 this.createRemote();
 
         this.createFan();
@@ -301,8 +312,11 @@ this.createRemote();
             this.bulb.setVelocityY(-300);
         }
     }
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 }
 
 export default GameScene;
