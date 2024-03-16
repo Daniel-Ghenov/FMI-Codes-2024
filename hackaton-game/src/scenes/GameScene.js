@@ -6,9 +6,9 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image("bg", "assets/bg.png");
         this.load.spritesheet('character', 'assets/bulb.png', {
-            frameWidth: 32,
+            frameWidth: 45,
             frameHeight: 48,
-          });
+        });
     }
 
     create() {
@@ -20,7 +20,7 @@ class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('character', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('character', { start: 0, end: 4 }),
             frameRate: 10,
             repeat: -1
           });
@@ -45,10 +45,13 @@ class GameScene extends Phaser.Scene {
   
         if (this.keys.left.isDown) {
           this.character.setVelocityX(-speed);
+          this.character.play('walk', true);
         } else if (this.keys.right.isDown) {
           this.character.setVelocityX(speed);
+          this.character.play('walk', true);
         } else {
           this.character.setVelocityX(0);
+          this.character.play('idle', true);
         }
         
         if (this.keys.up.isDown && this.character.body.touching.down) {
