@@ -91,11 +91,7 @@ class GameScene extends Phaser.Scene {
 
         this.fanBody = this.physics.add.staticSprite(1640, 740);
         this.fanBody.setDepth(-1000);
-<<<<<<< Updated upstream
         this.fanBody.setScale(4, 1.2);
-=======
-        this.fanBody.setScale(3.5, 3.5);
->>>>>>> Stashed changes
         this.fanBody.refreshBody();
 
         this.fanStream = this.physics.add.staticSprite(1640, 540);
@@ -172,15 +168,10 @@ class GameScene extends Phaser.Scene {
         let midpointX = (this.bulb.x + this.battery.x) / 2;
         this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
         
-<<<<<<< Updated upstream
         var isRemoteOn = this.physics.overlap(this.battery, this.remote);
         this.fan.isOn = isRemoteOn;
 
         this.updateFanBulbCollision();
-=======
-        let worldBounds = this.physics.world.bounds;
-        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
->>>>>>> Stashed changes
     }
 
     updateBulb() {
@@ -248,7 +239,6 @@ class GameScene extends Phaser.Scene {
 
     }
 
-<<<<<<< Updated upstream
     updateCamera() {
         let midpointX = (this.bulb.x + this.battery.x) / 2;
         this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
@@ -266,8 +256,6 @@ class GameScene extends Phaser.Scene {
             this.bulb.setVelocityY(-300);
         }
     }
-=======
->>>>>>> Stashed changes
 
 }
 
