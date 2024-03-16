@@ -133,6 +133,8 @@ class GameScene extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, 2000, 800);
 
+        this.physics.world.setBounds(0, 0, 2000, 800);
+
         this.anims.create({
             key: 'batteryWalk',
             frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 5 }),
