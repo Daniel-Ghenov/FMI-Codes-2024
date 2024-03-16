@@ -37,7 +37,7 @@ class GameScene extends Phaser.Scene {
         this.createBulb();
         this.createBattery();
 
-        // this.createChair();
+        this.createChair();
         this.createDrawers();
 
         this.keys = this.input.keyboard.addKeys({
@@ -73,7 +73,7 @@ class GameScene extends Phaser.Scene {
         this.drawers.setDepth(-1);
         this.drawers.setScale(3.5);
 
-        this.drawersBody = this.physics.add.staticSprite(1000, 620);
+        this.drawersBody = this.physics.add.staticSprite(700, 620);
         this.drawersBody.setDepth(-1000);
         this.drawersBody.setScale(12, 3);
         this.drawersBody.refreshBody();
