@@ -5,8 +5,7 @@ class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg", "assets/bg.png");
-        this.load.image("character", "assets/player1.png")
-        this.load.spritesheet('character', 'assets/spritesheet.png', {
+        this.load.spritesheet('character', 'assets/bulb.png', {
             frameWidth: 32,
             frameHeight: 48,
           });
@@ -17,16 +16,44 @@ class GameScene extends Phaser.Scene {
         bg.setDepth(-2);
 
         this.character = this.physics.add.sprite(100, 200, "character");
-        this.character.setScale(0.8);
-        this.floor = this.physics.add.staticSprite(1000, 750, 'floor');
+        this.character.setScale(1.2);
+
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('character', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+          });
+
+        this.floor = this.physics.add.staticSprite(300, 750, 'floor');
+
+        this.keys = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+          });
 
         this.floor.displayWidth = this.sys.game.config.width;
         this.floor.refreshBody(); 
         this.physics.add.collider(this.character, this.floor);
+        this.character.setCollideWorldBounds(true);
     }   
 
     update() {
-
+        const speed = 160;
+  
+        if (this.keys.left.isDown) {
+          this.character.setVelocityX(-speed);
+        } else if (this.keys.right.isDown) {
+          this.character.setVelocityX(speed);
+        } else {
+          this.character.setVelocityX(0);
+        }
+        
+        if (this.keys.up.isDown && this.character.body.touching.down) {
+          this.character.setVelocityY(-330);
+        }
     }
 
 
