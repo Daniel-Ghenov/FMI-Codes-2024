@@ -30,15 +30,7 @@ this.load.image('remote', 'assets/remote.png')
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
         
-<<<<<<< Updated upstream
         this.physics.world.setBounds(0, -100, 3000, 1000);
-=======
-        
-        this.physics.world.setBounds(0, 0, 3000, 900);
-
-
-        this.physics.world.setBounds(0, 0, 3000, 900);
->>>>>>> Stashed changes
 
         this.createFloor();
 
@@ -47,12 +39,9 @@ this.load.image('remote', 'assets/remote.png')
 
         this.createChair();
         this.createDrawers();
-<<<<<<< Updated upstream
 
         this.createWaterBowl();
         this.createBookshelf();
-=======
->>>>>>> Stashed changes
 this.createRemote();
 
         this.createFan();
@@ -127,6 +116,20 @@ this.createRemote();
         this.fanStream.setDepth(-1000);
         this.fanStream.setScale(4, 25);
         this.fanStream.refreshBody();
+
+        this.anims.create({
+            key: 'fanOn',
+            frames: this.anims.generateFrameNumbers('fan', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });        
+
+        this.anims.create({
+            key: 'fanOff',
+            frames: this.anims.generateFrameNumbers('fan', { start: 4, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
@@ -218,14 +221,12 @@ this.createRemote();
     update() {
         this.updateBulb();
         this.updateBattery();
-
-        let midpointX = (this.bulb.x + this.battery.x) / 2;
-        this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
         
         var isRemoteOn = this.physics.overlap(this.battery, this.remote);
         this.fan.isOn = isRemoteOn;
 
         this.updateFanBulbCollision();
+        this.updateCamera();
 
         //TODO add dying logic from the water bowl
     }
@@ -305,18 +306,18 @@ this.createRemote();
 
     updateFanBulbCollision() {
         if (!this.fan.isOn) {
+            this.fan.play('fanOff', true);
             return;
         }
+
+        this.fan.play('fanOn', true);
 
         if (this.physics.overlap(this.bulb, this.fanStream)) {
             this.bulb.setVelocityY(-300);
         }
     }
-<<<<<<< Updated upstream
 
 
-=======
->>>>>>> Stashed changes
 }
 
 export default GameScene;
