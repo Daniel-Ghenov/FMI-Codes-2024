@@ -2,7 +2,7 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super("GameScene");
     }
-
+    
     preload() {
         this.load.image("bg", "assets/bg.png");
         this.load.image("chair", "assets/chair.png")
@@ -15,7 +15,6 @@ class GameScene extends Phaser.Scene {
             frameHeight: 100,
         });
     }
-
     create() {
         this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
         this.bg.setDepth(-100);
@@ -131,6 +130,12 @@ class GameScene extends Phaser.Scene {
         
         if (this.keys.up.isDown && this.bulb.body.touching.down) {
             this.bulb.setVelocityY(-200);
+        }
+
+        // this.bg.tilePositionX += 1;
+
+        if (this.character.x >= this.sys.game.config.width) {
+            this.character.x = 0;
         }
     }
 
