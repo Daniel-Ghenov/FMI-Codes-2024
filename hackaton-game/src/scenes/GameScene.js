@@ -174,10 +174,16 @@ this.createRemote();
         this.bookshelf.setDepth(-1);
         this.bookshelf.setScale(3);
 
-        this.bookshelfBody = this.physics.add.staticSprite(2015, 230);
+        this.bookshelfBody = this.physics.add.staticSprite(2015, 240);
         this.bookshelfBody.setDepth(-1000);
-        this.bookshelfBody.setScale(6, 2);
+        this.bookshelfBody.setScale(8, 0.5);
         this.bookshelfBody.refreshBody();
+
+        this.books = this.physics.add.staticSprite(1945, 185);
+        this.books.setDepth(-1000);
+        this.books.setScale(3, 2.5);
+        this.books.refreshBody();
+
 
         this.physics.add.collider(this.bulb, this.bookshelfBody);
         this.physics.add.collider(this.battery, this.bookshelfBody)
