@@ -16,12 +16,13 @@ class GameScene extends Phaser.Scene {
         });
     }
     create() {
-        let bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
-        bg.setDepth(-100);
+        this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
+        this.bg.setDepth(-100);
+        this.bg.setScale(3.83);
 
-        this.floor = this.physics.add.staticSprite(300, 750, 'floor');
-
+        this.floor = this.physics.add.staticSprite(500, 750, 'floor');
         this.floor.displayWidth = this.sys.game.config.width;
+        this.floor.setDepth(-1000);
         this.floor.refreshBody(); 
 
         this.createBulb();
@@ -44,11 +45,11 @@ class GameScene extends Phaser.Scene {
     }   
 
     createChair() {
-        this.chair = this.physics.add.staticSprite(700, 630, 'chair');
+        this.chair = this.physics.add.staticSprite(700, 535, 'chair');
         this.chair.setDepth(-1);
-        this.chair.setScale(1.7);
+        this.chair.setScale(3);
 
-        this.chairCussion = this.physics.add.staticSprite(700, 650);
+        this.chairCussion = this.physics.add.staticSprite(700, 565);
         this.chairCussion.setDepth(-1000);
         this.chairCussion.setScale(5, 1);
         this.chairCussion.refreshBody();
@@ -121,7 +122,7 @@ class GameScene extends Phaser.Scene {
         }
         
         if (this.keys.up.isDown && this.bulb.body.touching.down) {
-            this.bulb.setVelocityY(-330);
+            this.bulb.setVelocityY(-200);
         }
 
         // this.bg.tilePositionX += 1;
@@ -155,7 +156,7 @@ class GameScene extends Phaser.Scene {
         }
         
         if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-            this.battery.setVelocityY(-330);
+            this.battery.setVelocityY(-400);
         }    
 
     }
