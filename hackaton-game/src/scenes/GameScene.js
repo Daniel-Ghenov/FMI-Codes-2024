@@ -7,7 +7,6 @@ class GameScene extends Phaser.Scene {
         this.load.image("bg", "assets/bg.png");
         this.load.image("chair", "assets/chair.png")
         this.load.image('drawers', 'assets/drawers.png')
-        this.load.image('remote', 'assets/remote.png')
         this.load.spritesheet('bulb', 'assets/bulb.png', {
             frameWidth: 53.6,
             frameHeight: 100,
@@ -32,7 +31,6 @@ class GameScene extends Phaser.Scene {
 
         this.createChair();
         this.createDrawers();
-        this.createRemote();
 
         this.createFan();
         this.createTable();
@@ -86,12 +84,6 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.drawersBody)
     }
 
-    createRemote() {
-        this.remote = this.physics.add.staticSprite(1000, 210, 'remote');
-        this.remote.setDepth(10);
-        this.remote.setScale(2);
-
-    }
     createFan() {
         this.fan = this.physics.add.staticSprite(1640, 700, 'fan');
         this.fan.setDepth(-1);
@@ -99,7 +91,11 @@ class GameScene extends Phaser.Scene {
 
         this.fanBody = this.physics.add.staticSprite(1640, 740);
         this.fanBody.setDepth(-1000);
+<<<<<<< Updated upstream
         this.fanBody.setScale(4, 1.2);
+=======
+        this.fanBody.setScale(3.5, 3.5);
+>>>>>>> Stashed changes
         this.fanBody.refreshBody();
 
         this.fanStream = this.physics.add.staticSprite(1640, 540);
@@ -119,7 +115,7 @@ class GameScene extends Phaser.Scene {
 
         this.tableBody = this.physics.add.staticSprite(2000, 700);
         this.tableBody.setDepth(-1000);
-        this.tableBody.setScale(10.5, 10.5);
+        this.tableBody.setScale(19, 14.5);
         this.tableBody.refreshBody();
 
         this.physics.add.collider(this.bulb, this.tableBody);
@@ -172,12 +168,19 @@ class GameScene extends Phaser.Scene {
     update() {
         this.updateBulb();
         this.updateBattery();
-        this.updateCamera();
+
+        let midpointX = (this.bulb.x + this.battery.x) / 2;
+        this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
         
+<<<<<<< Updated upstream
         var isRemoteOn = this.physics.overlap(this.battery, this.remote);
         this.fan.isOn = isRemoteOn;
 
         this.updateFanBulbCollision();
+=======
+        let worldBounds = this.physics.world.bounds;
+        this.cameras.main.scrollX = Phaser.Math.Clamp(this.cameras.main.scrollX, 0, worldBounds.width - this.cameras.main.width);
+>>>>>>> Stashed changes
     }
 
     updateBulb() {
@@ -245,6 +248,7 @@ class GameScene extends Phaser.Scene {
 
     }
 
+<<<<<<< Updated upstream
     updateCamera() {
         let midpointX = (this.bulb.x + this.battery.x) / 2;
         this.cameras.main.scrollX = midpointX - this.cameras.main.width / 2;
@@ -262,6 +266,8 @@ class GameScene extends Phaser.Scene {
             this.bulb.setVelocityY(-300);
         }
     }
+=======
+>>>>>>> Stashed changes
 
 }
 
