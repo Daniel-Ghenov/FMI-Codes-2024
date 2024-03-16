@@ -99,12 +99,12 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.drawersBody)
     }
 
-<<<<<<< HEAD
     createRemote() {
         this.remote = this.physics.add.staticSprite(1000, 210, 'remote');
         this.remote.setDepth(10);
         this.remote.setScale(2);
-=======
+
+    }
     createFan() {
         this.fan = this.physics.add.staticSprite(1635, 700, 'fan');
         this.fan.setDepth(-1);
@@ -118,7 +118,6 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.bulb, this.fanBody);
         this.physics.add.collider(this.battery, this.fanBody)
 
->>>>>>> 655839270557903d3395f3edc4abcceb34484d6d
     }
 
     createBulb() {
