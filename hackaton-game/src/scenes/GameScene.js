@@ -16,6 +16,7 @@ class GameScene extends Phaser.Scene {
             frameWidth: 47.1,
             frameHeight: 100,
         });
+        this.load.image('fan', 'assets/fan.png');
     }
     create() {
         
@@ -23,10 +24,20 @@ class GameScene extends Phaser.Scene {
         this.bg.setDepth(-100);
         this.bg.setScrollFactor(0);
 
-        this.floor = this.physics.add.staticSprite(500, 770, 'floor');
-        this.floor.setScale(1000, 1);
-        this.floor.setDepth(-1000);
-        this.floor.refreshBody(); 
+        // let viewportWidth = this.sys.game.config.width;
+        // let viewportHeight = this.sys.game.config.height;
+
+        // let scaleX = viewportWidth / this.bg.width;
+        // let scaleY = viewportHeight / this.bg.height;
+
+        // this.bg.setScale(scaleX, scaleY);
+
+
+        // this.floor = this.physics.add.staticSprite(500, 770, 'floor');
+        // this.floor.setScale(1000, 1);
+        // this.floor.setDepth(-1000);
+        // this.floor.refreshBody(); 
+        this.createFloor();
 
         this.createBulb();
         this.createBattery();
@@ -34,6 +45,10 @@ class GameScene extends Phaser.Scene {
         this.createChair();
         this.createDrawers();
         this.createRemote();
+
+        this.createFan();
+
+        
 
         this.keys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -48,6 +63,13 @@ class GameScene extends Phaser.Scene {
         });
 
     }   
+
+    createFloor() {
+        this.floor = this.physics.add.staticSprite(500, 770, 'floor');
+        this.floor.setScale(1000, 1);
+        this.floor.setDepth(-1000);
+        this.floor.refreshBody(); 
+    }
 
     createChair() {
         this.chair = this.physics.add.staticSprite(700, 560, 'chair');
@@ -77,10 +99,26 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.drawersBody)
     }
 
+<<<<<<< HEAD
     createRemote() {
         this.remote = this.physics.add.staticSprite(1000, 210, 'remote');
         this.remote.setDepth(10);
         this.remote.setScale(2);
+=======
+    createFan() {
+        this.fan = this.physics.add.staticSprite(1635, 700, 'fan');
+        this.fan.setDepth(-1);
+        this.fan.setScale(3.5);
+
+        this.fanBody = this.physics.add.staticSprite(1635, 700);
+        this.fanBody.setDepth(-1000);
+        this.fanBody.setScale(3.5, 3.5);
+        this.fanBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.fanBody);
+        this.physics.add.collider(this.battery, this.fanBody)
+
+>>>>>>> 655839270557903d3395f3edc4abcceb34484d6d
     }
 
     createBulb() {
@@ -102,6 +140,10 @@ class GameScene extends Phaser.Scene {
         this.battery = this.physics.add.sprite(100, 200, 'battery');
         this.physics.world.setBounds(0, 0, 3000, 900);
 
+        this.physics.world.setBounds(0, 0, 2000, 800);
+
+        this.physics.world.setBounds(0, 0, 2000, 800);
+
         this.anims.create({
             key: 'batteryWalk',
             frames: this.anims.generateFrameNumbers('battery', { start: 0, end: 5 }),
@@ -119,6 +161,8 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.floor);
         this.battery.setCollideWorldBounds(true);
     }
+
+   
 
     update() {
         this.updateBulb();
