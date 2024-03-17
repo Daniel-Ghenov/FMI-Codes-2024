@@ -38,6 +38,10 @@ class GameScene extends Phaser.Scene {
         frameHeight: 32,
     });
     this.load.image("pillow", "assets/pillow.png");
+    this.load.spritesheet("finish", "assets/final.png", {
+        frameWidth: 100,
+        frameHeight: 100,
+    });
   }
   create() {
     this.bg = this.add
@@ -77,6 +81,8 @@ class GameScene extends Phaser.Scene {
     this.createLongShelf();
     this.createTrain();
     this.createPillow();
+
+    this.createFinish();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -375,6 +381,41 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.battery, this.pillowBody);
     }
 
+    createFinish() {
+
+        this.finish = this.physics.add.sprite(6000, 700, "finish");
+        this.finish.setDepth(120);
+        this.finish.setScale(3);
+
+        this.finishBody = this.physics.add.staticSprite(6000, 700);
+        this.finishBody.setDepth(-1000);
+        this.finishBody.setScale(3, 3);
+        this.finishBody.refreshBody();
+
+        this.finishTrigger = this.physics.add.staticSprite(6000, 700);
+        this.finishTrigger.setDepth(-1000);
+        this.finishTrigger.setScale(3, 3);
+        this.finishTrigger.refreshBody();
+
+        this.anims.create({
+            key: "finish",
+            frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.finish.setVisible(false);
+
+        this.anims.create({
+            key: "finishTransition",
+            frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 25 }),
+            frameRate: 10,
+            repeat: 0,
+        });
+
+        this.physics.add.collider(this.finish, this.floor);
+    }
+
   createTable() {
     this.table = this.physics.add.staticSprite(2200, 700, "table");
     this.table.setDepth(-1);
@@ -476,6 +517,7 @@ class GameScene extends Phaser.Scene {
     this.checkWaterBowlDeath();
     this.updatePrism();
     this.updateTrain();
+    this.updateFinish();
   }
 
   updateBulb() {
@@ -599,6 +641,25 @@ class GameScene extends Phaser.Scene {
             this.trainTempBody.destroy();
         } else {
             this.train.play("trainStationary", true);
+        }
+    }
+
+    updateFinish() {
+        if (this.finish.hasFinished) {
+            return;
+        }
+
+        if (this.physics.overlap(this.bulb, this.finishTrigger) &&
+            this.physics.overlap(this.battery, this.finishTrigger)) {
+                this.finish.hasFinished = true;
+                this.bulb.setAlpha(0);
+                this.battery.setAlpha(0);
+
+                this.finish.setVisible(true);
+                console.log("finish");
+
+                this.finish.setAccelerationY(-100);
+                this.finish.play("finishTransition", true);
         }
     }
 
