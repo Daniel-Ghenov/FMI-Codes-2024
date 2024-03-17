@@ -6,8 +6,8 @@ import GameScene from "./src/scenes/GameScene";
 const config = {
   type: Phaser.AUTO,
   physics: {
-    default: "matter",
-    matter: {
+    default: "arcade",
+    arcade: {
       gravity: { y: 300 },
       debug: true,
     },

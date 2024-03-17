@@ -32,6 +32,12 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image("prism-lower", "assets/prism.png");
     this.load.image("open-wardrobe", "assets/openWardrobe.png");
+    this.load.image("long-shelf", "assets/longShelf.png");
+    this.load.spritesheet("train-sprite", "assets/train-sprite.png", {
+        frameWidth: 200,
+        frameHeight: 32,
+    });
+    this.load.image("pillow", "assets/pillow.png");
   }
   create() {
     this.bg = this.add
@@ -46,7 +52,7 @@ class GameScene extends Phaser.Scene {
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
 
-    this.matter.world.setBounds(0, -100, 8000, 1000);
+    this.physics.world.setBounds(0, -100, 10000, 1000);
 
     this.createFloor();
 
@@ -68,6 +74,9 @@ class GameScene extends Phaser.Scene {
     this.createWardrobe();
     this.createPrism();
     this.createOpenWardrobe();
+    this.createLongShelf();
+    this.createTrain();
+    this.createPillow();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -267,11 +276,6 @@ class GameScene extends Phaser.Scene {
         this.prism.on = false;
         this.prism.play("prismOff", true);
 
-        this.matter.add.rectangle(3340, 150, 400, 20, {
-            isStatic: true,
-            angle: Math.PI / 6 
-        });
-
         this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
         this.downstairsPrism.setDepth(-1);
 
@@ -295,13 +299,80 @@ class GameScene extends Phaser.Scene {
         this.secondWardrobe.setScale(4.7);
         this.secondWardrobe.refreshBody();
 
-        this.secondWardrobeBody = this.physics.add.staticSprite(5050, 450);
-        this.secondWardrobeBody.setDepth(-1000);
+        this.secondWardrobeBody = this.physics.add.staticSprite(5050, 425);
+        this.secondWardrobeBody.setDepth(-1);
         this.secondWardrobeBody.setScale(11, 20);
         this.secondWardrobeBody.refreshBody();
 
+        this.physics.add.collider(this.bulb, this.openWardrobeBody);
+        this.physics.add.collider(this.battery, this.openWardrobeBody);
+
         this.physics.add.collider(this.bulb, this.secondWardrobeBody);
         this.physics.add.collider(this.battery, this.secondWardrobeBody);
+    }
+
+    createLongShelf() {
+        this.longShelf = this.physics.add.staticSprite(6300, 140, "long-shelf");
+        this.longShelf.setDepth(-1);   
+        this.longShelf.setScale(4);
+
+        this.longShelfBody = this.physics.add.staticSprite(6300, 135);
+        this.longShelfBody.setDepth(-1000);
+        this.longShelfBody.setScale(50, 2);
+        this.longShelfBody.refreshBody();
+
+    }
+
+    createTrain() {
+        this.train = this.physics.add.sprite(5500, 30, "train-sprite");
+        this.train.setScale(4);
+        this.train.setOffset(0, -7);
+
+        this.trainTempBody = this.physics.add.staticSprite(5190, 65);
+        this.trainTempBody.setDepth(-1000);
+        this.trainTempBody.setScale(4, 4);
+        this.trainTempBody.refreshBody();
+
+        this.trainTrigger = this.physics.add.staticSprite(5150, 65);
+        this.trainTrigger.setDepth(-1000);
+        this.trainTrigger.setScale(5, 5);
+        this.trainTrigger.refreshBody();
+
+        this.anims.create({
+            key: "trainStationary",
+            frames: this.anims.generateFrameNumbers("train-sprite", { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: 0,
+        });
+
+        this.anims.create({
+            key: "trainMove",
+            frames: this.anims.generateFrameNumbers("train-sprite", { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.train.play("trainStationary", true);
+
+        this.physics.add.collider(this.bulb, this.trainTempBody);
+        this.physics.add.collider(this.battery, this.trainTempBody);
+
+        this.physics.add.collider(this.train, this.longShelfBody);
+        this.physics.add.collider(this.train, this.secondWardrobeBody);
+    }
+
+    createPillow() {
+        this.pillow = this.physics.add.staticSprite(5500, 720, "pillow");
+        this.pillow.setDepth(-1);
+        this.pillow.setScale(4);
+
+        this.pillowBody = this.physics.add.staticSprite(5500, 730);
+        this.pillowBody.setDepth(-1000);
+        this.pillowBody.setScale(6, 3);
+        this.pillowBody.refreshBody();
+
+        this.physics.add.collider(this.bulb, this.pillowBody);
+        this.physics.add.collider(this.battery, this.pillowBody);
     }
 
   createTable() {
@@ -359,7 +430,7 @@ class GameScene extends Phaser.Scene {
 }
 
   createBulb() {
-    this.bulb = this.physics.add.sprite(4200, 700, "bulb");
+    this.bulb = this.physics.add.sprite(4900, 10, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -373,7 +444,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(4200, 700, "battery");
+    this.battery = this.physics.add.sprite(4900, 10, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -404,6 +475,7 @@ class GameScene extends Phaser.Scene {
     this.updateCamera();
     this.checkWaterBowlDeath();
     this.updatePrism();
+    this.updateTrain();
   }
 
   updateBulb() {
@@ -460,7 +532,7 @@ class GameScene extends Phaser.Scene {
       if (!this.battery.body.touching.down) {
         this.battery.play("batteryJump", true);
       } else {
-        this.battery.play("batteryWalk", true);
+        this.battery.anims.stop();
       }
     }
 
@@ -513,6 +585,20 @@ class GameScene extends Phaser.Scene {
                 this.prism.play("prismTransitionBack", true);
                 this.prism.on = false;
             }
+        }
+    }
+
+    updateTrain() {
+        if (this.train.hasMoved) {
+            return 
+        }
+        if (this.physics.overlap(this.battery, this.trainTrigger)) {
+            this.train.play("trainMove", true);
+            this.train.setVelocityX(100);
+            this.train.hasMoved = true;
+            this.trainTempBody.destroy();
+        } else {
+            this.train.play("trainStationary", true);
         }
     }
 
