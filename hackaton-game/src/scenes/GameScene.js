@@ -594,7 +594,7 @@ this.bg.setPipeline("Light2D");
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(3200, 100, "bulb");
+    this.bulb = this.physics.add.sprite(100, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -602,13 +602,13 @@ this.bg.setPipeline("Light2D");
       frameRate: 10,
       repeat: -1,
     });
-
+    // this.bulb.setDrag(50, -30);
     this.physics.add.collider(this.bulb, this.floor);
     this.bulb.setCollideWorldBounds(true);
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(3000, 100, "battery");
+    this.battery = this.physics.add.sprite(100, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -672,7 +672,7 @@ this.bg.setPipeline("Light2D");
     }
 
     if (this.keys.up.isDown && this.bulb.body.touching.down) {
-      this.bulb.setVelocityY(-200);
+      this.bulb.setVelocityY(-500);
     }
   }
 
@@ -717,7 +717,7 @@ this.bg.setPipeline("Light2D");
     }
 
     if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-      this.battery.setVelocityY(-450);
+      this.battery.setVelocityY(-900);
     }
   }
 
