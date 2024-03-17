@@ -598,7 +598,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(4800, 100, "bulb");
+    this.bulb = this.physics.add.sprite(100, 700, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -629,7 +629,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(1500, 100, "battery");
+    this.battery = this.physics.add.sprite(50, 700, "battery");
 
     this.anims.create({
       key: "batteryWalk",
