@@ -369,7 +369,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createTrain() {
-    this.train = this.physics.add.sprite(5315, 30, "train-sprite");
+    this.train = this.physics.add.sprite(5300, 30, "train-sprite");
     this.train.setScale(4);
     this.train.setOffset(0, -7);
 
@@ -413,11 +413,11 @@ class GameScene extends Phaser.Scene {
   }
 
   createPillow() {
-    this.pillow = this.physics.add.staticSprite(5380, 720, "pillow");
+    this.pillow = this.physics.add.staticSprite(5500, 720, "pillow");
     this.pillow.setDepth(-1);
     this.pillow.setScale(4);
 
-    this.pillowBody = this.physics.add.staticSprite(5380, 730);
+    this.pillowBody = this.physics.add.staticSprite(5500, 730);
     this.pillowBody.setDepth(-1000);
     this.pillowBody.setScale(6, 3);
     this.pillowBody.refreshBody();
@@ -425,44 +425,43 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.pillowBody);
     this.physics.add.collider(this.battery, this.pillowBody);
   }
+  createFinish() {
+    this.finish = this.physics.add.sprite(6000,650, "finish");
+    this.finish.setOffset(0, -30)
+    this.finish.setScale(2.5);
 
-    createFinish() {
-        this.finish = this.physics.add.sprite(6000,700, "finish");
-        this.finish.setOffset(0, -30)
-        this.finish.setScale(2.5);
+    this.finishBody = this.physics.add.staticSprite(6000, 700);
+    this.finishBody.setDepth(-1000);
+    this.finishBody.setScale(3, 3);
+    this.finishBody.refreshBody();
 
-        this.finishBody = this.physics.add.staticSprite(6000, 700);
-        this.finishBody.setDepth(-1000);
-        this.finishBody.setScale(3, 3);
-        this.finishBody.refreshBody();
+    this.finishTrigger = this.physics.add.staticSprite(6000, 700);
+    this.finishTrigger.setDepth(-1000);
+    this.finishTrigger.setScale(7);
+    this.finishTrigger.refreshBody();
 
-        this.finishTrigger = this.physics.add.staticSprite(6000, 700);
-        this.finishTrigger.setDepth(-1000);
-        this.finishTrigger.setScale(7);
-        this.finishTrigger.refreshBody();
+    this.anims.create({
+    key: "finish",
+    frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 0 }),
+    frameRate: 10,
+    repeat: 0,
+    });
 
-        this.anims.create({
-        key: "finish",
-        frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 0 }),
-        frameRate: 10,
-        repeat: 0,
-        });
+    this.anims.create({
+    key: "finishTransition",
+    frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 25 }),
+    frameRate: 10,
+    repeat: 0,
+    });
+    this.finish.play("finish", true);
+    this.physics.add.collider(this.finish, this.floor);
 
-        this.anims.create({
-        key: "finishTransition",
-        frames: this.anims.generateFrameNumbers("finish", { start: 0, end: 25 }),
-        frameRate: 10,
-        repeat: 0,
-        });
-        this.finish.play("finish", true);
-        this.physics.add.collider(this.finish, this.floor);
+    this.finishHoldingBox = this.physics.add.staticSprite(6000, 650);
+    this.finishHoldingBox.setScale(2.5);
+    this.physics.add.collider(this.finish, this.finishHoldingBox);
 
-        this.finishHoldingBox = this.physics.add.staticSprite(6000, 650);
-        this.finishHoldingBox.setScale(2.5);
-        this.physics.add.collider(this.finish, this.finishHoldingBox);
-
-    }
-
+}
+  
     createMask() {
 
         this.overlay = this.add.graphics({
@@ -598,7 +597,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(100, 700, "bulb");
+    this.bulb = this.physics.add.sprite(100, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -629,7 +628,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(50, 700, "battery");
+    this.battery = this.physics.add.sprite(100, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -739,7 +738,7 @@ class GameScene extends Phaser.Scene {
     }
 
     if (this.keys.p2up.isDown && this.battery.body.touching.down) {
-      this.battery.setVelocityY(-900);
+      this.battery.setVelocityY(-800);
     }
   }
 
