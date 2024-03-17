@@ -1,7 +1,6 @@
 class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
-    this.isDark = false;
   }
 
   preload() {
@@ -63,10 +62,6 @@ class GameScene extends Phaser.Scene {
       .setOrigin(0, 0);
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
-this.bg.setPipeline("Light2D");
-
-    this.lights.enable().setAmbientColor(0xffffff);
-
 
     this.physics.world.setBounds(0, -100, 10000, 1000);
 
@@ -699,26 +694,6 @@ this.bg.setPipeline("Light2D");
     this.updateFinish();
 
     this.updateLight();
-
-    this.updateDistance();
-  }
-
-  updateDistance() {
-    const maxDistance = 470;
-
-    let distance = Phaser.Math.Distance.Between(
-      this.bulb.x,
-      this.bulb.y,
-      this.battery.x,
-      this.battery.y
-    );
-
-    if (distance > maxDistance) {
-      this.handleDistanceExceeded();
-    } else if (this.isDark) {
-      this.lights.enable().setAmbientColor(0xffffff);
-        this.isDark = false;
-    }
   }
 
   updateBulb() {
@@ -763,7 +738,8 @@ this.bg.setPipeline("Light2D");
         );
         const speed = 160;
 
-        if (batteryToBulbDistance > batteryToBulbMinDistance) {
+        if (batteryToBulbDistance > batteryToBulbMinDistance &&
+            !(this.prism.on && this.battery.x > 3200 && this.battery.x < 4200)) {
             this.battery.setVelocityX(0);
             this.battery.setVelocityY(0);
             this.battery.anims.stop();
@@ -903,10 +879,25 @@ this.bg.setPipeline("Light2D");
         );
 
         let lightRadius = batteryToBulbDistance > batteryToBulbMinDistance ? smallRadius : bigRadius;
-
         this.light.clear();
+
+        let points = [
+            {x : 3130, y : 170},
+            {x : 3170, y : 50},
+            {x : 4100, y : 880},
+            {x : 3900, y : 880},
+        ]
+
+        if (this.prism.on) {
+            this.light.fillStyle(0xff0000, 1);
+            this.light.fillPoints(points, true);
+            this.light.save();
+        }
+
         this.light.fillStyle(0xffffff, 1);
         this.light.fillCircle(this.bulb.x, this.bulb.y, lightRadius);
+        this.light.save();
+
     }
 
 }
