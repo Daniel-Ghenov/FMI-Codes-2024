@@ -303,7 +303,6 @@ class GameScene extends Phaser.Scene {
     this.plantStep9.setScale(2, 0.1);
     this.plantStep9.refreshBody();
 
-
     this.physics.add.collider(this.bulb, this.plantStep1);
     this.physics.add.collider(this.battery, this.plantStep1);
     this.physics.add.collider(this.bulb, this.plantStep2);
@@ -322,16 +321,14 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.plantStep8);
     this.physics.add.collider(this.bulb, this.plantStep9);
     this.physics.add.collider(this.battery, this.plantStep9);
-   
-
 
     this.secondWardrobe = this.physics.add.staticSprite(5000, 485, "wardrobe");
     this.secondWardrobe.setDepth(-1);
     this.secondWardrobe.setScale(4, 4);
     this.secondWardrobe.refreshBody();
 
-    this.physics.add.collider(this.bulb,this.secondWardrobe )
-    this.physics.add.collider(this.battery,this.secondWardrobe )
+    this.physics.add.collider(this.bulb, this.secondWardrobe);
+    this.physics.add.collider(this.battery, this.secondWardrobe);
 
     this.secondWardrobeBody = this.physics.add.staticSprite(5000, 470);
     this.secondWardrobeBody.setDepth(-1000);
@@ -406,32 +403,6 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.prismBody);
     this.physics.add.collider(this.battery, this.prismBody);
   }
-
-//   createOpenWardrobe() {
-//     this.openWardrobe = this.physics.add.staticSprite(
-//       4600,
-//       435,
-//       "open-wardrobe"
-//     );
-//     this.openWardrobe.setDepth(-1);
-//     this.openWardrobe.setScale(4.7);
-
-//     this.secondWardrobe = this.physics.add.staticSprite(5050, 450, "wardrobe");
-//     this.secondWardrobe.setDepth(-1);
-//     this.secondWardrobe.setScale(4.7);
-//     this.secondWardrobe.refreshBody();
-
-//     this.secondWardrobeBody = this.physics.add.staticSprite(5050, 425);
-//     this.secondWardrobeBody.setDepth(-1);
-//     this.secondWardrobeBody.setScale(11, 20);
-//     this.secondWardrobeBody.refreshBody();
-
-//     this.physics.add.collider(this.bulb, this.openWardrobeBody);
-//     this.physics.add.collider(this.battery, this.openWardrobeBody);
-
-//     this.physics.add.collider(this.bulb, this.secondWardrobeBody);
-//     this.physics.add.collider(this.battery, this.secondWardrobeBody);
-//   }
 
   createLongShelf() {
     this.longShelf = this.physics.add.staticSprite(6300, 140, "long-shelf");
