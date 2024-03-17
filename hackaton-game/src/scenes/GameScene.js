@@ -49,6 +49,7 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image("brownFloor", "assets/brownfloor.png");
     this.load.image("plant", "assets/plant.png");
+    this.load.image("book", "assets/lyingbook.png");
   }
   create() {
     this.bg = this.add
@@ -609,6 +610,11 @@ class GameScene extends Phaser.Scene {
   }
 
   createBook() {
+
+    this.book = this.physics.add.staticSprite(1800, 350, "book");
+    this.book.setDepth(-1);
+    this.book.setScale(1.7);
+    
 
     this.bookBody = this.physics.add.staticSprite(1800, 350);
     this.bookBody.setDepth(-1000);
