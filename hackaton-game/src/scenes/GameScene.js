@@ -64,7 +64,7 @@ class GameScene extends Phaser.Scene {
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
 
-    this.physics.world.setBounds(0, -100, 10000, 1000);
+    this.physics.world.setBounds(0, -300, 10000, 1500);
 
     this.createFloor();
 
@@ -413,7 +413,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createPillow() {
-    this.pillow = this.physics.add.staticSprite(5500, 720, "pillow");
+    this.pillow = this.physics.add.staticSprite(5350, 720, "pillow");
     this.pillow.setDepth(-1);
     this.pillow.setScale(4);
 
