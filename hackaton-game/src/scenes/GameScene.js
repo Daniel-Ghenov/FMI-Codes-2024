@@ -330,33 +330,7 @@ class GameScene extends Phaser.Scene {
     this.secondWardrobeBody.setScale(4, 5);
     this.secondWardrobeBody.refreshBody();
 
-    this.anims.create({
-      key: "prismTransition",
-      frames: this.anims.generateFrameNumbers("prism", { start: 0, end: 15 }),
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "prismTransitionBack",
-      frames: this.anims.generateFrameNumbers("prism", { start: 15, end: 0 }),
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    this.prism.on = false;
-    this.prism.play("prismOff", true);
-
-    this.downstairsPrism = this.physics.add.staticSprite(
-      4000,
-      725,
-      "prism-lower"
-    );
-    this.downstairsPrism.setDepth(-1);
-
-    this.brownFloor = this.physics.add.staticSprite(4000, 760, "brownFloor");
-    this.brownFloor.setDepth(0);
-    this.brownFloor.setScale(1);
+    
 
     this.downstairsRemote = this.physics.add.staticSprite(4300, 660, "remote");
     this.downstairsRemote.setDepth(10);
@@ -589,13 +563,13 @@ class GameScene extends Phaser.Scene {
     this.prism.play("prismOff", true);
 
     this.downstairsPrism = this.physics.add.staticSprite(
-      3700,
+      3835,
       725,
       "prism-lower"
     );
     this.downstairsPrism.setDepth(-1);
 
-    this.brownFloor = this.physics.add.staticSprite(4000, 760, "brownFloor");
+    this.brownFloor = this.physics.add.staticSprite(3835, 760, "brownFloor");
     this.brownFloor.setDepth(0);
     this.brownFloor.setScale(1);
 
