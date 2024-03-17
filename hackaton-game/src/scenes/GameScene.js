@@ -9,7 +9,7 @@ class GameScene extends Phaser.Scene {
     this.load.image("drawers", "assets/drawers.png");
     this.load.image("remote", "assets/remote.png");
     this.load.spritesheet("bulb", "assets/bulb.png", {
-      frameWidth: 53.6,
+      frameWidth: 53,
       frameHeight: 100,
     });
     this.load.spritesheet("battery", "assets/battery.png", {
@@ -88,6 +88,8 @@ class GameScene extends Phaser.Scene {
     this.createPillow();
 
     this.createFinish();
+
+    this.createMask();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -458,6 +460,26 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.finish, this.floor);
     }
 
+    createMask() {
+
+        this.overlay = this.add.graphics({
+            fillStyle: { color: 0x000000, alpha: 0.8 }
+        });
+    
+        this.overlay.fillRect(0, 0, 8000, 1200);
+        this.overlay.setDepth(1000);
+
+        this.light = this.make.graphics({ x: 0, y: 0, add: false });
+        this.light.fillStyle(0xffffff);
+        this.light.fillCircle(300, 400, 100);
+        this.light.generateTexture('maskCircle', 200, 200);
+
+        this.overlay.mask = new Phaser.Display.Masks.BitmapMask(this, this.light)
+		this.overlay.mask.invertAlpha = true
+
+
+    }
+
   createTable() {
     this.table = this.physics.add.staticSprite(2200, 700, "table");
     this.table.setDepth(-1);
@@ -513,7 +535,7 @@ class GameScene extends Phaser.Scene {
 }
 
   createBulb() {
-    this.bulb = this.physics.add.sprite(4900, 10, "bulb");
+    this.bulb = this.physics.add.sprite(3200, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -527,7 +549,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(4900, 10, "battery");
+    this.battery = this.physics.add.sprite(3200, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -560,6 +582,7 @@ class GameScene extends Phaser.Scene {
     this.updatePrism();
     this.updateTrain();
     this.updateFinish();
+    this.updateLight();
   }
 
   updateBulb() {
@@ -595,7 +618,21 @@ class GameScene extends Phaser.Scene {
   }
 
   updateBattery() {
-    const speed = 160;
+        const batteryToBulbMinDistance = 550;
+        let batteryToBulbDistance = Phaser.Math.Distance.Between(
+            this.battery.x,
+            this.battery.y,
+            this.bulb.x,
+            this.bulb.y
+        );
+        const speed = 160;
+
+        if (batteryToBulbDistance > batteryToBulbMinDistance) {
+            this.battery.setVelocityX(0);
+            this.battery.setVelocityY(0);
+            this.battery.anims.stop();
+            return;
+        }
 
     if (this.keys.p2left.isDown) {
       this.battery.setVelocityX(-speed);
@@ -714,6 +751,24 @@ class GameScene extends Phaser.Scene {
                 this.finish.setAccelerationY(-100);
                 this.finish.play("finishTransition", true);
         }
+    }
+
+    updateLight() {
+        const bigRadius = 500;
+        const smallRadius = 150;
+        const batteryToBulbMinDistance = 550;
+        const batteryToBulbDistance = Phaser.Math.Distance.Between(
+            this.battery.x,
+            this.battery.y,
+            this.bulb.x,
+            this.bulb.y
+        );
+
+        let lightRadius = batteryToBulbDistance > batteryToBulbMinDistance ? smallRadius : bigRadius;
+
+        this.light.clear();
+        this.light.fillStyle(0xffffff, 1);
+        this.light.fillCircle(this.bulb.x, this.bulb.y, lightRadius);
     }
 
 }
