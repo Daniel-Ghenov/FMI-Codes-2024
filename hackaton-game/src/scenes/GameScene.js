@@ -63,7 +63,7 @@ class GameScene extends Phaser.Scene {
       .setOrigin(0, 0);
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
-    this.bg.setPipeline("Light2D");
+this.bg.setPipeline("Light2D");
 
     this.lights.enable().setAmbientColor(0xffffff);
 
@@ -186,19 +186,19 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.fanBody);
   }
 
-  createTable() {
-    this.table = this.physics.add.staticSprite(2000, 700, "table");
-    this.table.setDepth(-1);
-    this.table.setScale(5, 5);
+//   createTable() {
+    // this.table = this.physics.add.staticSprite(2000, 700, "table");
+    // this.table.setDepth(-1);
+    // this.table.setScale(5, 5);
 
-    this.tableBody = this.physics.add.staticSprite(2000, 700);
-    this.tableBody.setDepth(-1000);
-    this.tableBody.setScale(20, 21);
-    this.tableBody.refreshBody();
+    // this.tableBody = this.physics.add.staticSprite(2000, 700);
+    // this.tableBody.setDepth(-1000);
+    // this.tableBody.setScale(20, 21);
+    // this.tableBody.refreshBody();
 
-    this.physics.add.collider(this.bulb, this.tableBody);
-    this.physics.add.collider(this.battery, this.tableBody);
-  }
+    // this.physics.add.collider(this.bulb, this.tableBody);
+    // this.physics.add.collider(this.battery, this.tableBody);
+//   }
 
   createClock() {
     this.clock = this.physics.add.staticSprite(2275, 135, "clock");
@@ -510,7 +510,6 @@ class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(this.bulb, this.tableBody);
     this.physics.add.collider(this.battery, this.tableBody);
-    this.physics.add.collider(this.finish, this.floor);
   }
 
   createWaterBowl() {
@@ -698,6 +697,7 @@ class GameScene extends Phaser.Scene {
     this.updatePrism();
     this.updateTrain();
     this.updateFinish();
+
     this.updateLight();
 
     this.updateDistance();
