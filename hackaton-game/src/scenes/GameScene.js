@@ -200,9 +200,9 @@ class GameScene extends Phaser.Scene {
     this.chandelier.setDepth(-1);
     this.chandelier.setScale(4);
 
-    this.chandelierBody = this.physics.add.staticSprite(2600, 1250);
+    this.chandelierBody = this.physics.add.staticSprite(2600, 200);
     this.chandelierBody.setDepth(-1000);
-    this.chandelierBody.setScale(3.5, 1);
+    this.chandelierBody.setScale(7, 1);
     this.chandelierBody.refreshBody();
 
     this.physics.add.collider(this.bulb, this.chandelierBody);
@@ -475,13 +475,13 @@ class GameScene extends Phaser.Scene {
     }
 
   createTable() {
-    this.table = this.physics.add.staticSprite(2200, 700, "table");
+    this.table = this.physics.add.staticSprite(2000, 700, "table");
     this.table.setDepth(-1);
     this.table.setScale(5, 5);
 
-    this.tableBody = this.physics.add.staticSprite(2200, 700);
+    this.tableBody = this.physics.add.staticSprite(2000, 700);
     this.tableBody.setDepth(-1000);
-    this.tableBody.setScale(27, 21);
+    this.tableBody.setScale(20, 21);
     this.tableBody.refreshBody();
 
     this.physics.add.collider(this.bulb, this.tableBody);
@@ -589,7 +589,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(100, 100, "bulb");
+    this.bulb = this.physics.add.sprite(3000, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -603,7 +603,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(100, 100, "battery");
+    this.battery = this.physics.add.sprite(3000, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
