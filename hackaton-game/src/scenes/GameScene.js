@@ -49,6 +49,7 @@ class GameScene extends Phaser.Scene {
     });
     this.load.image("brownFloor", "assets/brownfloor.png");
     this.load.image("plant", "assets/plant.png");
+    this.load.image("book", "assets/lyingbook.png");
   }
   create() {
     this.bg = this.add
@@ -93,6 +94,8 @@ class GameScene extends Phaser.Scene {
 
     this.createMask();
     this.createPlant();
+
+    this.createBook();
 
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -182,11 +185,11 @@ class GameScene extends Phaser.Scene {
   }
 
   createClock() {
-    this.clock = this.physics.add.staticSprite(2275, 135, "clock");
+    this.clock = this.physics.add.staticSprite(2275, 165, "clock");
     this.clock.setDepth(-1);
     this.clock.setScale(1.5);
 
-    this.clockBody = this.physics.add.staticSprite(2275, 135);
+    this.clockBody = this.physics.add.staticSprite(2275, 165);
     this.clockBody.setDepth(-1000);
     this.clockBody.setScale(3.5);
     this.clockBody.refreshBody();
@@ -200,9 +203,9 @@ class GameScene extends Phaser.Scene {
     this.chandelier.setDepth(-1);
     this.chandelier.setScale(4);
 
-    this.chandelierBody = this.physics.add.staticSprite(2600, 200);
+    this.chandelierBody = this.physics.add.staticSprite(2600, 210);
     this.chandelierBody.setDepth(-1000);
-    this.chandelierBody.setScale(7, 1);
+    this.chandelierBody.setScale(8, 1);
     this.chandelierBody.refreshBody();
 
     this.physics.add.collider(this.bulb, this.chandelierBody);
@@ -528,7 +531,7 @@ class GameScene extends Phaser.Scene {
     this.books.setScale(3, 2.5);
     this.books.refreshBody();
 
-    this.stepBook = this.physics.add.staticSprite(1975, 199);
+    this.stepBook = this.physics.add.staticSprite(1976, 210);
     this.stepBook.setDepth(-1000);
     this.stepBook.setScale(3, 1);
     this.stepBook.refreshBody();
@@ -595,7 +598,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(5500, 600, "bulb");
+    this.bulb = this.physics.add.sprite(4800, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -608,8 +611,25 @@ class GameScene extends Phaser.Scene {
     this.bulb.setCollideWorldBounds(true);
   }
 
+  createBook() {
+
+    this.book = this.physics.add.staticSprite(1800, 350, "book");
+    this.book.setDepth(-1);
+    this.book.setScale(1.7);
+    
+
+    this.bookBody = this.physics.add.staticSprite(1800, 350);
+    this.bookBody.setDepth(-1000);
+    this.bookBody.setScale(3, 1);
+    this.bookBody.refreshBody();
+
+
+    this.physics.add.collider(this.bulb, this.bookBody);
+    this.physics.add.collider(this.battery, this.bookBody);
+  }
+
   createBattery() {
-    this.battery = this.physics.add.sprite(5500, 600, "battery");
+    this.battery = this.physics.add.sprite(1500, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
