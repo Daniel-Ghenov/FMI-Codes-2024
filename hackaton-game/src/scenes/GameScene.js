@@ -42,6 +42,11 @@ class GameScene extends Phaser.Scene {
         frameWidth: 100,
         frameHeight: 100,
     });
+    this.load.spritesheet("laser", "assets/laser-start.png", {
+        frameWidth: 200,
+        frameHeight: 75,
+    });
+    this.load.image("brownFloor", "assets/brownfloor.png");
   }
   create() {
     this.bg = this.add
@@ -285,10 +290,47 @@ class GameScene extends Phaser.Scene {
         this.downstairsPrism = this.physics.add.staticSprite(4000, 725, "prism-lower");
         this.downstairsPrism.setDepth(-1);
 
+        this.brownFloor = this.physics.add.staticSprite(4000, 760, "brownFloor");
+        this.brownFloor.setDepth(0);
+        this.brownFloor.setScale(1);
 
-        this.downstairsRemote = this.physics.add.staticSprite(4250, 660, "remote");
+        this.downstairsRemote = this.physics.add.staticSprite(4300, 660, "remote");
         this.downstairsRemote.setDepth(10);
         this.downstairsRemote.setScale(2);
+
+        this.downstairsRemoteTrigger = this.physics.add.staticSprite(4300, 660);
+        this.downstairsRemoteTrigger.setDepth(-1000);
+        this.downstairsRemoteTrigger.setScale(2, 2);
+        this.downstairsRemoteTrigger.refreshBody();
+
+        this.laser = this.physics.add.staticSprite(4050, 725, "laser");
+        this.laser.setDepth(-1);
+        this.laser.setScale(1.5);
+
+        this.anims.create({
+            key: "laserOff",
+            frames: this.anims.generateFrameNumbers("laser", { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "laserTransition",
+            frames: this.anims.generateFrameNumbers("laser", { start: 0, end: 6 }),
+            frameRate: 10,
+            repeat: 0,
+        });
+
+        this.anims.create({
+            key: "laserOn",
+            frames: this.anims.generateFrameNumbers("laser", { start: 6, end: 6 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.laser.on = false;
+        this.laser.play("laserOff", true);
+            
 
         this.physics.add.collider(this.bulb, this.prismBody);
         this.physics.add.collider(this.battery, this.prismBody);
@@ -617,6 +659,17 @@ class GameScene extends Phaser.Scene {
     }
 
     updatePrism() {
+        if (this.laser.on) {
+            return;
+        }
+        if (this.physics.overlap(this.battery, this.downstairsRemoteTrigger)) {
+            this.laser.play("laserTransition", true);
+            this.laser.on = true;
+            if (!this.prism.on) {
+                this.prism.play("prismTransition", true);
+            }
+        }
+                
         if (this.physics.overlap(this.bulb, this.prismTrigger)) {
             if (!this.prism.on) {
                 this.prism.play("prismTransition", true);
