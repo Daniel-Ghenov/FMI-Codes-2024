@@ -308,7 +308,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.bulb, this.secondWardrobe);
     this.physics.add.collider(this.battery, this.secondWardrobe);
 
-    this.secondWardrobeBody = this.physics.add.staticSprite(5000, 470);
+    this.secondWardrobeBody = this.physics.add.staticSprite(5000, 480);
     this.secondWardrobeBody.setDepth(-1000);
     this.secondWardrobeBody.setScale(4, 5);
     this.secondWardrobeBody.refreshBody();
@@ -352,27 +352,30 @@ class GameScene extends Phaser.Scene {
   }
 
   createLongShelf() {
-    this.longShelf = this.physics.add.staticSprite(6300, 140, "long-shelf");
+    this.longShelf = this.physics.add.staticSprite(6200, 230, "long-shelf");
     this.longShelf.setDepth(-1);
     this.longShelf.setScale(4);
 
-    this.longShelfBody = this.physics.add.staticSprite(6300, 135);
+    this.longShelfBody = this.physics.add.staticSprite(6250, 222);
     this.longShelfBody.setDepth(-1000);
     this.longShelfBody.setScale(50, 2);
     this.longShelfBody.refreshBody();
+
+    this.physics.add.collider(this.bulb, this.longShelfBody);
+    this.physics.add.collider(this.battery, this.longShelfBody);    
   }
 
   createTrain() {
-    this.train = this.physics.add.sprite(5500, 30, "train-sprite");
+    this.train = this.physics.add.sprite(5300, 30, "train-sprite");
     this.train.setScale(4);
     this.train.setOffset(0, -7);
 
-    this.trainTempBody = this.physics.add.staticSprite(5190, 65);
+    this.trainTempBody = this.physics.add.staticSprite(5000, 120);
     this.trainTempBody.setDepth(-1000);
     this.trainTempBody.setScale(4, 4);
     this.trainTempBody.refreshBody();
 
-    this.trainTrigger = this.physics.add.staticSprite(5150, 65);
+    this.trainTrigger = this.physics.add.staticSprite(4950, 120);
     this.trainTrigger.setDepth(-1000);
     this.trainTrigger.setScale(5, 5);
     this.trainTrigger.refreshBody();
@@ -589,7 +592,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(3000, 100, "bulb");
+    this.bulb = this.physics.add.sprite(4800, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -603,7 +606,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(3000, 100, "battery");
+    this.battery = this.physics.add.sprite(4800, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -828,8 +831,8 @@ class GameScene extends Phaser.Scene {
 
         let points = [
             {x : 3130, y : 170},
-            {x : 3170, y : 50},
-            {x : 4100, y : 880},
+            {x : 3270, y : 10},
+            {x : 4250, y : 880},
             {x : 3900, y : 880},
         ]
 
