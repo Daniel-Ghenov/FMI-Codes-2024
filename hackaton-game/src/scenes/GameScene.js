@@ -1,9 +1,11 @@
 class GameScene extends Phaser.Scene {
   constructor() {
     super("GameScene");
+    this.isDark = false;
   }
 
   preload() {
+    this.load.image("darkness", "assets/darkness.png");
     this.load.image("bg", "assets/bg.png");
     this.load.image("chair", "assets/chair.png");
     this.load.image("drawers", "assets/drawers.png");
@@ -61,6 +63,10 @@ class GameScene extends Phaser.Scene {
       .setOrigin(0, 0);
     this.bg.setDepth(-100);
     this.bg.setScrollFactor(0);
+    this.bg.setPipeline("Light2D");
+
+    this.lights.enable().setAmbientColor(0xffffff);
+
 
     this.physics.world.setBounds(0, -100, 10000, 1000);
 
@@ -179,39 +185,25 @@ class GameScene extends Phaser.Scene {
   }
 
   createTable() {
-    this.table = this.physics.add.staticSprite(2200, 700, "table");
+    this.table = this.physics.add.staticSprite(2000, 700, "table");
     this.table.setDepth(-1);
     this.table.setScale(5, 5);
 
-    this.tableBody = this.physics.add.staticSprite(2200, 700);
+    this.tableBody = this.physics.add.staticSprite(2000, 700);
     this.tableBody.setDepth(-1000);
-    this.tableBody.setScale(27, 21);
+    this.tableBody.setScale(20, 21);
     this.tableBody.refreshBody();
 
     this.physics.add.collider(this.bulb, this.tableBody);
     this.physics.add.collider(this.battery, this.tableBody);
   }
 
-  createWaterBowl() {
-    this.waterbowl = this.physics.add.staticSprite(2250, 325, "waterbowl");
-    this.waterbowl.setDepth(-1);
-    this.waterbowl.setScale(2);
-
-    this.waterbowlBody = this.physics.add.staticSprite(2245, 325);
-    this.waterbowlBody.setDepth(-1000);
-    this.waterbowlBody.setScale(0.5);
-    this.waterbowlBody.refreshBody();
-
-    this.physics.add.collider(this.bulb, this.waterbowlBody);
-    this.physics.add.collider(this.battery, this.waterbowlBody);
-  }
-
   createClock() {
-    this.clock = this.physics.add.staticSprite(2350, 125, "clock");
+    this.clock = this.physics.add.staticSprite(2275, 135, "clock");
     this.clock.setDepth(-1);
     this.clock.setScale(1.5);
 
-    this.clockBody = this.physics.add.staticSprite(2350, 125);
+    this.clockBody = this.physics.add.staticSprite(2275, 135);
     this.clockBody.setDepth(-1000);
     this.clockBody.setScale(3.5);
     this.clockBody.refreshBody();
@@ -221,11 +213,11 @@ class GameScene extends Phaser.Scene {
   }
 
   createChandelier() {
-    this.chandelier = this.physics.add.staticSprite(2850, 1250, "chandelier");
+    this.chandelier = this.physics.add.staticSprite(2600, 1250, "chandelier");
     this.chandelier.setDepth(-1);
     this.chandelier.setScale(4);
 
-    this.chandelierBody = this.physics.add.staticSprite(2850, 220);
+    this.chandelierBody = this.physics.add.staticSprite(2600, 1250);
     this.chandelierBody.setDepth(-1000);
     this.chandelierBody.setScale(3.5, 1);
     this.chandelierBody.refreshBody();
@@ -235,14 +227,17 @@ class GameScene extends Phaser.Scene {
   }
 
   createWardrobe() {
-    this.wardrobe = this.physics.add.staticSprite(3200, 520, "wardrobe");
+    this.wardrobe = this.physics.add.staticSprite(3000, 520, "wardrobe");
     this.wardrobe.setDepth(-1);
     this.wardrobe.setScale(4.7);
 
-    this.wardrobeBody = this.physics.add.staticSprite(3200, 500);
+    this.wardrobeBody = this.physics.add.staticSprite(3000, 500);
     this.wardrobeBody.setDepth(-1000);
     this.wardrobeBody.setScale(11, 20);
     this.wardrobeBody.refreshBody();
+
+    this.physics.add.collider(this.bulb, this.wardrobeBody);
+    this.physics.add.collider(this.battery, this.wardrobeBody);
 
     for (let i = 0; i < 100; i++) {
       this.rand = this.physics.add.staticSprite(3200 + i * 5, 210 + i * 5);
@@ -507,20 +502,6 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.finish, this.floor);
   }
 
-  createTable() {
-    this.table = this.physics.add.staticSprite(2200, 700, "table");
-    this.table.setDepth(-1);
-    this.table.setScale(5, 5);
-
-    this.tableBody = this.physics.add.staticSprite(2200, 700);
-    this.tableBody.setDepth(-1000);
-    this.tableBody.setScale(27, 21);
-    this.tableBody.refreshBody();
-
-    this.physics.add.collider(this.bulb, this.tableBody);
-    this.physics.add.collider(this.battery, this.tableBody);
-  }
-
   createWaterBowl() {
     this.waterbowl = this.physics.add.staticSprite(2250, 325, "waterbowl");
     this.waterbowl.setDepth(-1);
@@ -550,40 +531,35 @@ class GameScene extends Phaser.Scene {
     this.bookshelfBody.setScale(8, 0.5);
     this.bookshelfBody.refreshBody();
 
-    this.books = this.physics.add.staticSprite(1945, 185);
+    this.books = this.physics.add.staticSprite(2085, 185);
     this.books.setDepth(-1000);
     this.books.setScale(3, 2.5);
     this.books.refreshBody();
+
+    this.stepBook = this.physics.add.staticSprite(1975, 199);
+    this.stepBook.setDepth(-1000);
+    this.stepBook.setScale(3, 1);
+    this.stepBook.refreshBody();
 
     this.physics.add.collider(this.bulb, this.books);
     this.physics.add.collider(this.battery, this.books);
     this.physics.add.collider(this.bulb, this.bookshelfBody);
     this.physics.add.collider(this.battery, this.bookshelfBody);
+    this.physics.add.collider(this.bulb, this.stepBook);
+    this.physics.add.collider(this.battery, this.stepBook);
   }
-  createWardrobe() {
-    this.wardrobe = this.physics.add.staticSprite(3200, 520, "wardrobe");
-    this.wardrobe.setDepth(-1);
-    this.wardrobe.setScale(4.7);
-
-    this.wardrobeBody = this.physics.add.staticSprite(3200, 500);
-    this.wardrobeBody.setDepth(-1000);
-    this.wardrobeBody.setScale(11, 20);
-    this.wardrobeBody.refreshBody();
-
-    this.physics.add.collider(this.bulb, this.wardrobeBody);
-    this.physics.add.collider(this.battery, this.wardrobeBody);
-  }
+  
   createPrism() {
-    this.prism = this.physics.add.staticSprite(3706, 466, "prism");
+    this.prism = this.physics.add.staticSprite(3536, 466, "prism");
     this.prism.setDepth(-1);
     this.prism.setScale(1);
 
-    this.prismBody = this.physics.add.staticSprite(3360, 300);
+    this.prismBody = this.physics.add.staticSprite(3260, 300);
     this.prismBody.setDepth(-1000);
     this.prismBody.setScale(1, 1);
     this.prismBody.refreshBody();
 
-    this.prismTrigger = this.physics.add.staticSprite(3340, 150);
+    this.prismTrigger = this.physics.add.staticSprite(3200, 150);
     this.prismTrigger.setDepth(-1000);
     this.prismTrigger.setScale(5, 5);
     this.prismTrigger.refreshBody();
@@ -613,7 +589,7 @@ class GameScene extends Phaser.Scene {
     this.prism.play("prismOff", true);
 
     this.downstairsPrism = this.physics.add.staticSprite(
-      4000,
+      3700,
       725,
       "prism-lower"
     );
@@ -664,7 +640,7 @@ class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.battery, this.prismBody);
   }
   createBulb() {
-    this.bulb = this.physics.add.sprite(4250, 100, "bulb");
+    this.bulb = this.physics.add.sprite(3000, 100, "bulb");
 
     this.anims.create({
       key: "bulbWalk",
@@ -678,7 +654,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBattery() {
-    this.battery = this.physics.add.sprite(4250, 100, "battery");
+    this.battery = this.physics.add.sprite(3000, 100, "battery");
 
     this.anims.create({
       key: "batteryWalk",
@@ -711,6 +687,26 @@ class GameScene extends Phaser.Scene {
     this.updatePrism();
     this.updateTrain();
     this.updateFinish();
+
+    this.updateDistance();
+  }
+
+  updateDistance() {
+    const maxDistance = 470;
+
+    let distance = Phaser.Math.Distance.Between(
+      this.bulb.x,
+      this.bulb.y,
+      this.battery.x,
+      this.battery.y
+    );
+
+    if (distance > maxDistance) {
+      this.handleDistanceExceeded();
+    } else if (this.isDark) {
+      this.lights.enable().setAmbientColor(0xffffff);
+        this.isDark = false;
+    }
   }
 
   updateBulb() {
@@ -867,6 +863,30 @@ class GameScene extends Phaser.Scene {
       this.finish.setAccelerationY(-100);
       this.finish.play("finishTransition", true);
     }
+  }
+
+  handleDistanceExceeded() {
+    if (this.isDark) {
+      return;
+    }
+    // this.lights.enable().setAmbientColor(0x000000);
+
+    this.lights.enable().setAmbientColor(0x000000);
+    this.isDark = true;
+
+    this.input.on("pointermove", (pointer) => {
+
+    //   this.light.x = pointer.x;
+    //   this.light.y = pointer.y;
+
+    });
+    this.input.on("pointerdown", (pointer) => {
+      if (this.lights.active) {
+        this.lights.disable();
+      } else {
+        this.lights.enable();
+      }
+    });
   }
 }
 
