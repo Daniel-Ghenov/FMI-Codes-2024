@@ -186,20 +186,6 @@ this.bg.setPipeline("Light2D");
     this.physics.add.collider(this.battery, this.fanBody);
   }
 
-//   createTable() {
-    // this.table = this.physics.add.staticSprite(2000, 700, "table");
-    // this.table.setDepth(-1);
-    // this.table.setScale(5, 5);
-
-    // this.tableBody = this.physics.add.staticSprite(2000, 700);
-    // this.tableBody.setDepth(-1000);
-    // this.tableBody.setScale(20, 21);
-    // this.tableBody.refreshBody();
-
-    // this.physics.add.collider(this.bulb, this.tableBody);
-    // this.physics.add.collider(this.battery, this.tableBody);
-//   }
-
   createClock() {
     this.clock = this.physics.add.staticSprite(2275, 135, "clock");
     this.clock.setDepth(-1);
@@ -332,18 +318,13 @@ this.bg.setPipeline("Light2D");
     this.secondWardrobeBody.setScale(4, 5);
     this.secondWardrobeBody.refreshBody();
 
-    
 
-    this.downstairsRemote = this.physics.add.staticSprite(4300, 660, "remote");
-    this.downstairsRemote.setDepth(10);
-    this.downstairsRemote.setScale(2);
+    this.downstairsLaserTrigger = this.physics.add.staticSprite(4000, 660);
+    this.downstairsLaserTrigger.setDepth(-1000);
+    this.downstairsLaserTrigger.setScale(2, 2);
+    this.downstairsLaserTrigger.refreshBody();
 
-    this.downstairsRemoteTrigger = this.physics.add.staticSprite(4300, 660);
-    this.downstairsRemoteTrigger.setDepth(-1000);
-    this.downstairsRemoteTrigger.setScale(2, 2);
-    this.downstairsRemoteTrigger.refreshBody();
-
-    this.laser = this.physics.add.staticSprite(4050, 725, "laser");
+    this.laser = this.physics.add.staticSprite(3899, 725, "laser");
     this.laser.setDepth(-1);
     this.laser.setScale(1.5);
 
@@ -609,43 +590,6 @@ this.bg.setPipeline("Light2D");
     this.brownFloor.setDepth(0);
     this.brownFloor.setScale(1);
 
-    this.downstairsRemote = this.physics.add.staticSprite(4300, 660, "remote");
-    this.downstairsRemote.setDepth(10);
-    this.downstairsRemote.setScale(2);
-
-    this.downstairsRemoteTrigger = this.physics.add.staticSprite(4300, 660);
-    this.downstairsRemoteTrigger.setDepth(-1000);
-    this.downstairsRemoteTrigger.setScale(2, 2);
-    this.downstairsRemoteTrigger.refreshBody();
-
-    this.laser = this.physics.add.staticSprite(4050, 725, "laser");
-    this.laser.setDepth(-1);
-    this.laser.setScale(1.5);
-
-    this.anims.create({
-      key: "laserOff",
-      frames: this.anims.generateFrameNumbers("laser", { start: 0, end: 0 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "laserTransition",
-      frames: this.anims.generateFrameNumbers("laser", { start: 0, end: 6 }),
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "laserOn",
-      frames: this.anims.generateFrameNumbers("laser", { start: 6, end: 6 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    this.laser.on = false;
-    this.laser.play("laserOff", true);
-
     this.physics.add.collider(this.bulb, this.prismBody);
     this.physics.add.collider(this.battery, this.prismBody);
   }
@@ -699,28 +643,7 @@ this.bg.setPipeline("Light2D");
     this.updateFinish();
 
     this.updateLight();
-
-    this.updateDistance();
   }
-
-  updateDistance() {
-    const maxDistance = 470;
-
-    let distance = Phaser.Math.Distance.Between(
-      this.bulb.x,
-      this.bulb.y,
-      this.battery.x,
-      this.battery.y
-    );
-
-    if (distance > maxDistance) {
-      this.handleDistanceExceeded();
-    } else if (this.isDark) {
-      this.lights.enable().setAmbientColor(0xffffff);
-        this.isDark = false;
-    }
-  }
-
   updateBulb() {
     const speed = 160;
     this.bulb.play("bulbWalk", true);
@@ -835,13 +758,15 @@ this.bg.setPipeline("Light2D");
     if (this.laser.on) {
       return;
     }
-    if (this.physics.overlap(this.battery, this.downstairsRemoteTrigger)) {
+    this.laser.isOn = this.physics.overlap(this.battery, this.downstairsLaserTrigger)
+    if (this.laser.isOn) {
       this.laser.play("laserTransition", true);
       this.laser.on = true;
       if (!this.prism.on) {
         this.prism.play("prismTransition", true);
       }
     }
+
 
     if (this.physics.overlap(this.bulb, this.prismTrigger)) {
       if (!this.prism.on) {
